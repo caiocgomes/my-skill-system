@@ -60,7 +60,6 @@
 
     const skillInputs = document.querySelectorAll(".skill-input");
     const idiomaInputs = document.querySelectorAll(".idioma-input");
-    const modInputs = document.querySelectorAll(".mod-input");
 
     let gastos = 0;
 
@@ -71,13 +70,24 @@
       const row = input.closest("tr");
       if (!row) return;
 
-      const mod = parseInt(row.querySelector("td:nth-child(3)")?.textContent) || 0;
-      const prof = pontos > 0 ? game?.user?.character?.system?.attributes?.prof || 0 : 0;
-      const extra = parseInt(row.querySelector(".mod-input")?.value || 0);
-      const totalMod = mod + pontos + prof + extra;
+      const modAttr = parseInt(row.querySelector("td:nth-child(3)")?.textContent) || 0;
+      const modExtra = parseInt(row.querySelector(".mod-input")?.value || 0);
+      const isIdioma = row.dataset.skillKey?.startsWith("idiomas_");
+
+      const prof = (pontos > 0) ? (game.user.character?.system?.attributes?.prof || 0) : 0;
+
+      let totalMod = 0;
+
+      if (isIdioma) {
+        totalMod = pontos + prof;
+      } else if (pontos > 0) {
+        totalMod = pontos + modAttr + prof + modExtra;
+      } else {
+        totalMod = modAttr;
+      }
 
       const cell = row.querySelector(".skill-total");
-      if (cell) cell.textContent = `+${totalMod}`;
+      if (cell) cell.textContent = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
     });
 
     idiomaInputs.forEach(input => {
