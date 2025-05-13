@@ -1,6 +1,10 @@
-<form>
+<form id="skill-form">
     <h2>Distribuir Pontos de Perícia</h2>
-    <p>Total disponível: {{totalPoints}}</p>
+    <p>
+      Total disponível: <span id="total-pontos">{{totalPoints}}</span> |
+      Gastos: <span id="pontos-gastos">0</span> |
+      Restantes: <span id="pontos-restantes">{{totalPoints}}</span>
+    </p>
   
     <table>
       <thead>
@@ -18,7 +22,7 @@
             <td>{{skill.ability}}</td>
             <td>{{skill.mod}}</td>
             <td>
-              <input type="number" name="skills.{{key}}" value="{{skill.value}}" min="0" />
+              <input type="number" class="skill-input" name="skills.{{key}}" value="{{skill.value}}" min="0" data-skill="{{key}}" />
             </td>
           </tr>
         {{/each}}
@@ -31,27 +35,68 @@
       {{#each idiomas as |valor nome|}}
         <div class="idioma-linha">
           <input name="idiomaNome.{{@index}}" type="text" value="{{nome}}" placeholder="Nome do idioma" />
-          <input name="idiomaValor.{{@index}}" type="number" value="{{valor}}" min="0" />
+          <input name="idiomaValor.{{@index}}" class="idioma-input" type="number" value="{{valor}}" min="0" />
         </div>
       {{/each}}
     </div>
     <button type="button" onclick="addIdioma()">Adicionar Idioma</button>
   
     <hr>
-    <button type="submit">Salvar</button>
+    <button type="submit" id="submit-button">Salvar</button>
   </form>
   
   <script>
-  function addIdioma() {
-    const container = document.getElementById("idiomas-lista");
-    const index = container.children.length;
-    const div = document.createElement("div");
-    div.className = "idioma-linha";
-    div.innerHTML = `
-      <input name="idiomaNome.${index}" type="text" placeholder="Nome do idioma" />
-      <input name="idiomaValor.${index}" type="number" value="0" min="0" />
-    `;
-    container.appendChild(div);
-  }
+    const total = parseInt(document.getElementById("total-pontos").textContent);
+    const skillInputs = document.querySelectorAll(".skill-input, .idioma-input");
+    const gastosEl = document.getElementById("pontos-gastos");
+    const restantesEl = document.getElementById("pontos-restantes");
+    const submitBtn = document.getElementById("submit-button");
+  
+    function atualizarResumo() {
+      let gastos = 0;
+      skillInputs.forEach(input => {
+        const val = parseInt(input.value) || 0;
+        gastos += val;
+      });
+      gastosEl.textContent = gastos;
+      const restantes = total - gastos;
+      restantesEl.textContent = restantes;
+  
+      if (restantes < 0) {
+        restantesEl.style.color = "red";
+        submitBtn.disabled = true;
+      } else {
+        restantesEl.style.color = "";
+        submitBtn.disabled = false;
+      }
+    }
+  
+    skillInputs.forEach(input => {
+      input.addEventListener("input", atualizarResumo);
+    });
+  
+    atualizarResumo();
+  
+    function addIdioma() {
+      const container = document.getElementById("idiomas-lista");
+      const index = container.children.length;
+      const div = document.createElement("div");
+      div.className = "idioma-linha";
+      div.innerHTML = `
+        <input name="idiomaNome.${index}" type="text" placeholder="Nome do idioma" />
+        <input name="idiomaValor.${index}" class="idioma-input" type="number" value="0" min="0" />
+      `;
+      container.appendChild(div);
+      div.querySelector(".idioma-input").addEventListener("input", atualizarResumo);
+      atualizarResumo();
+    }
+  
+    document.getElementById("skill-form").addEventListener("submit", function (e) {
+      const gastos = parseInt(gastosEl.textContent);
+      if (gastos > total) {
+        e.preventDefault();
+        ui.notifications.warn("Você gastou mais pontos do que o disponível.");
+      }
+    });
   </script>
   
