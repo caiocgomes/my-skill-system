@@ -1,5 +1,4 @@
-Hooks.once("init", () => {
-  console.log("Skill System | Inicializando módulo...");
+
 
   Hooks.once("init", () => {
     console.log("Skill System | Inicializando módulo...");
