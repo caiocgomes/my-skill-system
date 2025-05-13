@@ -22,7 +22,7 @@
       <tr class="skill-row" data-skill-key="{{key}}">
         <td>{{skill.label}}</td>
         <td>{{skill.ability}}</td>
-        <td>{{#if (gt skill.mod 0)}}+{{/if}}{{skill.mod}}</td>
+        <td>{{#if (gt skill.modAttr 0)}}+{{/if}}{{skill.modAttr}}</td>
         <td>
           <input type="number" name="skills.{{key}}" class="skill-input" value="{{skill.pontos}}" min="0" />
         </td>
@@ -34,7 +34,6 @@
       {{/each}}
     </tbody>
   </table>
-
 
   <hr>
   <h3>Idiomas Personalizados</h3>
@@ -53,18 +52,15 @@
 </form>
 
 <script>
-  const total = parseInt(document.getElementById("total-pontos").textContent);
-  const skillInputs = document.querySelectorAll(".skill-input, .idioma-input");
-  const gastosEl = document.getElementById("pontos-gastos");
-  const restantesEl = document.getElementById("pontos-restantes");
-  const submitBtn = document.getElementById("submit-button");
-
   function atualizarResumo() {
     const total = parseInt(document.getElementById("total-pontos").textContent);
-    const skillInputs = document.querySelectorAll(".skill-input, .idioma-input");
     const gastosEl = document.getElementById("pontos-gastos");
     const restantesEl = document.getElementById("pontos-restantes");
     const submitBtn = document.getElementById("submit-button");
+
+    const skillInputs = document.querySelectorAll(".skill-input");
+    const idiomaInputs = document.querySelectorAll(".idioma-input");
+    const modInputs = document.querySelectorAll(".mod-input");
 
     let gastos = 0;
 
@@ -73,14 +69,21 @@
       gastos += pontos;
 
       const row = input.closest("tr");
-      const mod = parseInt(row.querySelector("td:nth-child(3)").textContent) || 0;
-      const prof = pontos > 0 ? parseInt(row.querySelector(".skill-input").dataset.prof || 0) : 0;
+      if (!row) return;
+
+      const mod = parseInt(row.querySelector("td:nth-child(3)")?.textContent) || 0;
+      const prof = pontos > 0 ? game?.user?.character?.system?.attributes?.prof || 0 : 0;
       const extra = parseInt(row.querySelector(".mod-input")?.value || 0);
       const totalMod = mod + pontos + prof + extra;
 
-      row.querySelector(".skill-total").textContent = `+${totalMod}`;
+      const cell = row.querySelector(".skill-total");
+      if (cell) cell.textContent = `+${totalMod}`;
     });
 
+    idiomaInputs.forEach(input => {
+      const pontos = parseInt(input.value) || 0;
+      gastos += pontos;
+    });
 
     gastosEl.textContent = gastos;
     const restantes = total - gastos;
@@ -95,32 +98,38 @@
     }
   }
 
-
-  skillInputs.forEach(input => {
-    input.addEventListener("input", atualizarResumo);
-  });
-
-  atualizarResumo();
-
   function addIdioma() {
     const container = document.getElementById("idiomas-lista");
     const index = container.children.length;
     const div = document.createElement("div");
     div.className = "idioma-linha";
     div.innerHTML = `
-        <input name="idiomaNome.${index}" type="text" placeholder="Nome do idioma" />
-        <input name="idiomaValor.${index}" class="idioma-input" type="number" value="0" min="0" />
-      `;
+      <input name="idiomaNome.${index}" type="text" placeholder="Nome do idioma" />
+      <input name="idiomaValor.${index}" class="idioma-input" type="number" value="0" min="0" />
+    `;
     container.appendChild(div);
     div.querySelector(".idioma-input").addEventListener("input", atualizarResumo);
     atualizarResumo();
   }
 
+  document.addEventListener("input", (event) => {
+    if (
+      event.target.matches(".skill-input") ||
+      event.target.matches(".mod-input") ||
+      event.target.matches(".idioma-input")
+    ) {
+      atualizarResumo();
+    }
+  });
+
   document.getElementById("skill-form").addEventListener("submit", function (e) {
-    const gastos = parseInt(gastosEl.textContent);
+    const total = parseInt(document.getElementById("total-pontos").textContent);
+    const gastos = parseInt(document.getElementById("pontos-gastos").textContent);
     if (gastos > total) {
       e.preventDefault();
       ui.notifications.warn("Você gastou mais pontos do que o disponível.");
     }
   });
+
+  atualizarResumo();
 </script>
