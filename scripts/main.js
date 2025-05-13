@@ -43,201 +43,219 @@ Hooks.once("init", () => {
     ver: { label: "Ver", ability: "wis" }
   };
 
-libWrapper.register("my-skill-system", "CONFIG.Actor.documentClass.prototype.getRollData", function (wrapped) {
-const data = wrapped.call(this);
-const skills = CONFIG.DND5E.skills;
-const flags = this.getFlag("my-skill-system", "skills") || {};
-const idiomas = this.getFlag("my-skill-system", "skillsIdiomas") || {};
-const oficios = this.getFlag("my-skill-system", "skillsOficios") || {};
-const prof = this.system.attributes.prof || 0;
+  libWrapper.register("my-skill-system", "CONFIG.Actor.documentClass.prototype.getRollData", function (wrapped) {
+    const data = wrapped.call(this);
+    const skills = CONFIG.DND5E.skills;
+    const flags = this.getFlag("my-skill-system", "skills") || {};
+    const idiomas = this.getFlag("my-skill-system", "skillsIdiomas") || {};
+    const oficios = this.getFlag("my-skill-system", "skillsOficios") || {};
+    const prof = this.system.attributes.prof || 0;
 
-for (const [key, meta] of Object.entries(skills)) {
-  const pontos = flags[key] || 0;
-  const modAtributo = meta.ability ? data.abilities[meta.ability].mod : 0;
-  const modFinal = pontos > 0 ? pontos + modAtributo + prof : modAtributo;
+    for (const [key, meta] of Object.entries(skills)) {
+      const pontos = flags[key] || 0;
+      const modAtributo = meta.ability ? data.abilities[meta.ability].mod : 0;
+      const modFinal = pontos > 0 ? pontos + modAtributo + prof : modAtributo;
 
-  data.skills[key] = {
-    label: meta.label,
-    value: pontos,
-    mod: modFinal,
-    ability: meta.ability
-  };
-}
+      data.skills[key] = {
+        label: meta.label,
+        value: pontos,
+        mod: modFinal,
+        ability: meta.ability
+      };
+    }
 
-for (const [idioma, pontos] of Object.entries(idiomas)) {
-  data.skills[`idiomas_${idioma}`] = {
-    label: `Idioma (${idioma})`,
-    value: pontos,
-    mod: pontos,
-    ability: "int"
-  };
-}
+    for (const [idioma, pontos] of Object.entries(idiomas)) {
+      data.skills[`idiomas_${idioma}`] = {
+        label: `Idioma (${idioma})`,
+        value: pontos,
+        mod: pontos,
+        ability: "int"
+      };
+    }
 
-for (const [oficio, pontos] of Object.entries(oficios)) {
-  data.skills[`oficios_${oficio}`] = {
-    label: `Ofício (${oficio})`,
-    value: pontos,
-    mod: pontos,
-    ability: "int"
-  };
-}
+    for (const [oficio, pontos] of Object.entries(oficios)) {
+      data.skills[`oficios_${oficio}`] = {
+        label: `Ofício (${oficio})`,
+        value: pontos,
+        mod: pontos,
+        ability: "int"
+      };
+    }
 
-return data;
-}, "WRAPPER");
+    return data;
+  }, "WRAPPER");
 
 
-Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
-  if (!sheet.actor.isOwner) return;
-  buttons.unshift({
-    label: "Perícias",
-    class: "skill-allocator",
-    icon: "fas fa-sliders-h",
-    onclick: () => new SkillPointAllocator(sheet.actor).render(true)
+  Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
+    if (!sheet.actor.isOwner) return;
+    buttons.unshift({
+      label: "Perícias",
+      class: "skill-allocator",
+      icon: "fas fa-sliders-h",
+      onclick: () => new SkillPointAllocator(sheet.actor).render(true)
+    });
   });
-});
 });
 
 function calcularPontosPericia(actor) {
-const classe = actor.items.find(i => i.type === "class");
-const nomeClasse = classe?.name?.toLowerCase() || "";
-const intMod = actor.system.abilities.int.mod || 0;
-const nivel = actor.system.details.level || 1;
+  const classe = actor.items.find(i => i.type === "class");
+  const nomeClasse = classe?.name?.toLowerCase() || "";
+  const intMod = actor.system.abilities.int.mod || 0;
+  const nivel = actor.system.details.level || 1;
 
-const pontosPorClasse = {
-  fighter: 2,
-  wizard: 2,
-  artificer: 3,
-  cleric: 3,
-  druid: 3,
-  sorcerer: 3,
-  barbarian: 4,
-  monk: 4,
-  ranger: 4,
-  paladin: 4,
-  warlock: 4,
-  bard: 5,
-  rogue: 5
-};
+  const pontosPorClasse = {
+    fighter: 2,
+    wizard: 2,
+    artificer: 3,
+    cleric: 3,
+    druid: 3,
+    sorcerer: 3,
+    barbarian: 4,
+    monk: 4,
+    ranger: 4,
+    paladin: 4,
+    warlock: 4,
+    bard: 5,
+    rogue: 5
+  };
 
-const base = pontosPorClasse[nomeClasse] ?? 2;
-const pontosPrimeiroNivel = nivel >= 1 ? (base + intMod) * 3 : 0;
-const pontosRestantes = Math.max(nivel - 1, 0) * Math.max(base + intMod, 1);
-return pontosPrimeiroNivel + pontosRestantes;
+  const base = pontosPorClasse[nomeClasse] ?? 2;
+  const pontosPrimeiroNivel = nivel >= 1 ? (base + intMod) * 3 : 0;
+  const pontosRestantes = Math.max(nivel - 1, 0) * Math.max(base + intMod, 1);
+  return pontosPrimeiroNivel + pontosRestantes;
 }
 
 class SkillPointAllocator extends FormApplication {
-constructor(actor, options = {}) {
-  super(actor, options);
-  this.actor = actor;
-}
-
-static get defaultOptions() {
-  return mergeObject(super.defaultOptions, {
-    id: "skill-point-allocator",
-    title: "Distribuir Pontos de Perícia",
-    template: "modules/my-skill-system/templates/allocator.html",
-    width: 600
-  });
-}
-
-async getData() {
-  const current = await this.actor.getFlag("my-skill-system", "skills") || {};
-  const idiomas = await this.actor.getFlag("my-skill-system", "skillsIdiomas") || {};
-  const oficios = await this.actor.getFlag("my-skill-system", "skillsOficios") || {};
-  const totalPoints = calcularPontosPericia(this.actor);
-
-  const habilidades = this.actor.system.abilities;
-  const skills = Object.entries(CONFIG.DND5E.skills).reduce((acc, [key, meta]) => {
-    acc[key] = {
-      label: meta.label,
-      ability: meta.ability?.toUpperCase() || "-",
-      mod: meta.ability ? habilidades[meta.ability].mod : 0,
-      value: current[key] || 0
-    };
-    return acc;
-  }, {});
-
-  return { skills, idiomas, totalPoints };
-}
-
-async _updateObject(_, formData) {
-  const data = expandObject(formData);
-
-  const idiomas = {};
-  for (let i = 0; data.idiomaNome?.[i]; i++) {
-    const nome = data.idiomaNome[i].trim();
-    const valor = parseInt(data.idiomaValor[i]) || 0;
-    if (nome) idiomas[nome] = valor;
+  constructor(actor, options = {}) {
+    super(actor, options);
+    this.actor = actor;
   }
 
-  const oficios = {};
-  for (let i = 0; data.oficioNome?.[i]; i++) {
-    const nome = data.oficioNome[i].trim();
-    const valor = parseInt(data.oficioValor[i]) || 0;
-    if (nome) oficios[nome] = valor;
+  static get defaultOptions() {
+    return mergeObject(super.defaultOptions, {
+      id: "skill-point-allocator",
+      title: "Distribuir Pontos de Perícia",
+      template: "modules/my-skill-system/templates/allocator.html",
+      width: 600
+    });
   }
 
-  await this.actor.setFlag("my-skill-system", "skills", data.skills);
-  await this.actor.setFlag("my-skill-system", "skillsIdiomas", idiomas);
-  await this.actor.setFlag("my-skill-system", "skillsOficios", oficios);
-}
+  async getData() {
+    const current = await this.actor.getFlag("my-skill-system", "skills") || {};
+    const extras = await this.actor.getFlag("my-skill-system", "skillMods") || {};
+    const idiomas = await this.actor.getFlag("my-skill-system", "skillsIdiomas") || {};
+    const oficios = await this.actor.getFlag("my-skill-system", "skillsOficios") || {};
+    const totalPoints = calcularPontosPericia(this.actor);
+
+    const habilidades = this.actor.system.abilities;
+    const prof = this.actor.system.attributes.prof || 0;
+
+    const skills = Object.entries(CONFIG.DND5E.skills).reduce((acc, [key, meta]) => {
+      const pontos = current[key] || 0;
+      const mod = meta.ability ? habilidades[meta.ability].mod : 0;
+      const modExtra = extras[key] || 0;
+      const aplicaProf = pontos > 0 ? prof : 0;
+      const total = mod + pontos + aplicaProf + modExtra;
+
+      acc[key] = {
+        label: meta.label,
+        ability: meta.ability?.toUpperCase() || "-",
+        mod,
+        value: pontos,
+        modExtra,
+        prof: aplicaProf,
+        total
+      };
+      return acc;
+    }, {});
+
+    return { skills, idiomas, oficios, totalPoints };
+  }
+
+
+  async _updateObject(_, formData) {
+    const data = expandObject(formData);
+
+    const idiomas = {};
+    for (let i = 0; data.idiomaNome?.[i]; i++) {
+      const nome = data.idiomaNome[i].trim();
+      const valor = parseInt(data.idiomaValor[i]) || 0;
+      if (nome) idiomas[nome] = valor;
+    }
+
+    const oficios = {};
+    for (let i = 0; data.oficioNome?.[i]; i++) {
+      const nome = data.oficioNome[i].trim();
+      const valor = parseInt(data.oficioValor[i]) || 0;
+      if (nome) oficios[nome] = valor;
+    }
+
+    const skills = data.skills || {};
+    const mods = data.mods || {};
+
+    await this.actor.setFlag("my-skill-system", "skills", skills);
+    await this.actor.setFlag("my-skill-system", "skillMods", mods);
+    await this.actor.setFlag("my-skill-system", "skillsIdiomas", idiomas);
+    await this.actor.setFlag("my-skill-system", "skillsOficios", oficios);
+  }
+
 
 }
 Hooks.on("renderActorSheet5eCharacter", (app, html, data) => {
-const actor = app.actor;
-const rollData = actor.getRollData();
-const allSkills = rollData.skills || {};
+  const actor = app.actor;
+  const rollData = actor.getRollData();
+  const allSkills = rollData.skills || {};
 
-const originalSkillSection = html.find(".skills-list");
-console.log(originalSkillSection);
-if (!originalSkillSection.length) return;
+  const originalSkillSection = html.find(".skills-list");
+  console.log(originalSkillSection);
+  if (!originalSkillSection.length) return;
 
-const novaLista = $(`<ul class="custom-skill-list"></ul>`);
+  const novaLista = $(`<ul class="custom-skill-list"></ul>`);
 
-for (const [key, skill] of Object.entries(allSkills)) {
-  let label;
+  for (const [key, skill] of Object.entries(allSkills)) {
+    let label;
 
-  if (key.startsWith("idiomas_")) {
-    console.log("Idiomas: ")
-    const nome = key.replace("idiomas_", "");
-    console.log("Idiomas: ",nome)
-    label = `Idioma (${nome})`;
-  } else if (key.startsWith("oficios_")) {
-    const nome = key.replace("oficios_", "");
-    label = `Ofício (${nome})`;
-  } else {
-    label = skill.label || CONFIG.DND5E.skills?.[key]?.label || key;
-  }
-  console.log(label)
-  const mod = skill.mod >= 0 ? `+${skill.mod}` : `${skill.mod}`;
-  console.log(label, mod)
-  const li = $(`
+    if (key.startsWith("idiomas_")) {
+      console.log("Idiomas: ")
+      const nome = key.replace("idiomas_", "");
+      console.log("Idiomas: ", nome)
+      label = `Idioma (${nome})`;
+    } else if (key.startsWith("oficios_")) {
+      const nome = key.replace("oficios_", "");
+      label = `Ofício (${nome})`;
+    } else {
+      label = skill.label || CONFIG.DND5E.skills?.[key]?.label || key;
+    }
+    console.log(label)
+    const mod = skill.mod >= 0 ? `+${skill.mod}` : `${skill.mod}`;
+    console.log(label, mod)
+    const li = $(`
     <li class="skill flexrow custom-skill" data-skill="${key}" style="cursor:pointer;">
       <div class="skill-name">${label}</div>
       <div class="skill-mod">${mod}</div>
     </li>
   `);
 
-  li.on("click", async () => {
-    await dnd5e.dice.d20Roll({
-      actor: actor,
-      data: rollData,
-      parts: [String(skill.mod || 0)],
-      title: `Perícia: ${label}`,
-      flavor: `Perícia: ${label}`,
-      fastForward: false,
-      rollMode: game.settings.get("core", "rollMode")
+    li.on("click", async () => {
+      await dnd5e.dice.d20Roll({
+        actor: actor,
+        data: rollData,
+        parts: [String(skill.mod || 0)],
+        title: `Perícia: ${label}`,
+        flavor: `Perícia: ${label}`,
+        fastForward: false,
+        rollMode: game.settings.get("core", "rollMode")
+      });
     });
-  });
-  console.log(label)
-  novaLista.append(li);
-  console.log(novaLista)
-}
+    console.log(label)
+    novaLista.append(li);
+    console.log(novaLista)
+  }
 
 
 
 
-const container = $(`<div class="custom-skill-container" style="max-height: 65vh; overflow-y: auto;"></div>`);
-container.append(novaLista);
-originalSkillSection.empty().append(container);
+  const container = $(`<div class="custom-skill-container" style="max-height: 65vh; overflow-y: auto;"></div>`);
+  container.append(novaLista);
+  originalSkillSection.empty().append(container);
 });
