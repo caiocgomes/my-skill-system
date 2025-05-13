@@ -15,7 +15,7 @@
       }
     ],
     "url": "https://github.com/seuusuario/my-skill-system",
-    "manifest": "https://github.com/caiocgomes/my-skill-system/releases/latest/download/module.json",
-    "download": "https://github.com/caiocgomes/my-skill-system/releases/latest/download/my-skill-system.zip"
+    "manifest": "https://raw.githubusercontent.com/caiocgomes/my-skill-system/refs/heads/main/module.json",
+    "download": "https://github.com/caiocgomes/my-skill-system/archive/refs/tags/v1.0.0.zip"
   }
   
