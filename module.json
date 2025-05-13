@@ -1,0 +1,21 @@
+{
+    "name": "my-skill-system",
+    "title": "Skill Point System",
+    "description": "Substitui as perícias e permite alocar pontos manualmente.",
+    "version": "1.0.0",
+    "author": "Caio Gomes",
+    "minimumCoreVersion": "10",
+    "compatibleCoreVersion": "11",
+    "system": ["dnd5e"],
+    "scripts": ["scripts/main.js"],
+    "languages": [
+      {
+        "lang": "en",
+        "path": "lang/en.json"
+      }
+    ],
+    "url": "https://github.com/seuusuario/my-skill-system",
+    "manifest": "https://github.com/caiocgomes/my-skill-system/releases/latest/download/module.json",
+    "download": "https://github.com/caiocgomes/my-skill-system/releases/latest/download/my-skill-system.zip"
+  }
+  

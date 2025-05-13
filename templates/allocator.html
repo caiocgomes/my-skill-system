@@ -1,0 +1,28 @@
+<form>
+    <h2>Distribuir Pontos de Perícia</h2>
+    <p>Total de pontos disponíveis: {{totalPoints}}</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Perícia</th>
+          <th>Atributo</th>
+          <th>Mod</th>
+          <th>Pontos</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each skills as |skill key|}}
+          <tr>
+            <td>{{skill.label}}</td>
+            <td>{{skill.ability}}</td>
+            <td>{{skill.mod}}</td>
+            <td>
+              <input type="number" name="skills.{{key}}" value="{{skill.value}}" min="0" />
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <button type="submit">Salvar</button>
+  </form>
+  
