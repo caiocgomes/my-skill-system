@@ -1,15 +1,48 @@
 Hooks.once("init", () => {
   console.log("Skill System | Inicializando módulo...");
 
-  CONFIG.DND5E.skills = {
-    // habilidades fixas
-    abrirFechadura: { label: "Abrir Fechadura", ability: "dex" },
-    acrobacia: { label: "Acrobacia", ability: "dex" },
-    agarrar: { label: "Agarrar", ability: "str" },
-    // ... [demais perícias fixas]
-    ver: { label: "Ver", ability: "wis" }
-    // idiomas será tratado separadamente
-  };
+  Hooks.once("init", () => {
+    console.log("Skill System | Inicializando módulo...");
+  
+    CONFIG.DND5E.skills = {
+      abrirFechadura: { label: "Abrir Fechadura", ability: "dex" },
+      acrobacia: { label: "Acrobacia", ability: "dex" },
+      agarrar: { label: "Agarrar", ability: "str" },
+      avaliacao: { label: "Avaliação", ability: "int" },
+      atuacao: { label: "Atuação", ability: "cha" },
+      coletarInformacao: { label: "Coletar Informação", ability: "cha" },
+      concentracao: { label: "Concentração", ability: "con" },
+      conhecimento: { label: "Conhecimento", ability: "int" },
+      correr: { label: "Correr", ability: "con" },
+      cura: { label: "Cura", ability: "wis" },
+      decifrarEscrita: { label: "Decifrar Escrita", ability: "int" },
+      desativarDispositivo: { label: "Desativar Dispositivo", ability: "int" },
+      disfarce: { label: "Disfarce", ability: "cha" },
+      enganacao: { label: "Enganação", ability: "cha" },
+      equilibrio: { label: "Equilíbrio", ability: "dex" },
+      escalar: { label: "Escalar", ability: "str" },
+      escapar: { label: "Escapar", ability: "dex" },
+      esconder: { label: "Esconder-se", ability: "dex" },
+      falsificacao: { label: "Falsificação", ability: "int" },
+      intimidacao: { label: "Intimidação", ability: "cha" },
+      investigacao: { label: "Investigação", ability: "int" },
+      lidarAnimais: { label: "Lidar com Animais", ability: "wis" },
+      magificio: { label: "Magifício", ability: "int" },
+      montaria: { label: "Montaria", ability: "dex" },
+      moverSilencio: { label: "Mover-se em Silênçio", ability: "dex" },
+      natacao: { label: "Natação", ability: "con" },
+      oficio: { label: "Ofício", ability: "int" },
+      ouvir: { label: "Ouvir", ability: "wis" },
+      persuasao: { label: "Persuasão", ability: "cha" },
+      prestidigitacao: { label: "Prestidigitação", ability: "dex" },
+      profissao: { label: "Profissão", ability: "wis" },
+      salto: { label: "Salto", ability: "str" },
+      sentirMotivacao: { label: "Sentir Motivação", ability: "wis" },
+      sobrevivencia: { label: "Sobrevivência", ability: "wis" },
+      usarCorda: { label: "Usar Corda", ability: "dex" },
+      usarDispositivoMagico: { label: "Usar Dispositivo Mágico", ability: "cha" },
+      ver: { label: "Ver", ability: "wis" }
+    };
 
   libWrapper.register("my-skill-system", "CONFIG.Actor.documentClass.prototype.getRollData", function (wrapped) {
     const data = wrapped.call(this);
