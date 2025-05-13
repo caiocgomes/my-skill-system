@@ -2,7 +2,7 @@
     "name": "my-skill-system",
     "title": "Skill Point System",
     "description": "Substitui as perícias e permite alocar pontos manualmente.",
-    "version": "1.1.3",
+    "version": "1.1.4",
     "author": "Caio Gomes",
     "minimumCoreVersion": "10",
     "compatibleCoreVersion": "11",
@@ -16,5 +16,5 @@
     ],
     "url": "https://github.com/seuusuario/my-skill-system",
     "manifest": "https://raw.githubusercontent.com/caiocgomes/my-skill-system/refs/heads/main/module.json",
-    "download": "https://github.com/caiocgomes/my-skill-system/archive/refs/tags/v1.1.3.zip"
+    "download": "https://github.com/caiocgomes/my-skill-system/archive/refs/tags/v1.1.4.zip"
 }

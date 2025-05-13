@@ -36,7 +36,7 @@
   </table>
 
   <hr>
-  <h3>Idiomas Personalizados</h3>
+  <h3>Idiomas</h3>
   <div id="idiomas-lista">
     {{#each idiomas as |valor nome|}}
     <div class="idioma-linha">
@@ -45,7 +45,55 @@
     </div>
     {{/each}}
   </div>
-  <button type="button" onclick="addIdioma()">Adicionar Idioma</button>
+  <button type="button" onclick="addLinha('idiomas')">Adicionar Idioma</button>
+
+  <hr>
+  <h3>Ofícios</h3>
+  <div id="oficios-lista">
+    {{#each oficios as |valor nome|}}
+    <div class="oficio-linha">
+      <input name="oficioNome.{{@index}}" type="text" value="{{nome}}" placeholder="Nome do ofício" />
+      <input name="oficioValor.{{@index}}" class="oficio-input" type="number" value="{{valor}}" min="0" />
+    </div>
+    {{/each}}
+  </div>
+  <button type="button" onclick="addLinha('oficios')">Adicionar Ofício</button>
+
+  <hr>
+  <h3>Conhecimentos</h3>
+  <div id="conhecimentos-lista">
+    {{#each conhecimentos as |valor nome|}}
+    <div class="conhecimento-linha">
+      <input name="conhecimentoNome.{{@index}}" type="text" value="{{nome}}" placeholder="Nome do conhecimento" />
+      <input name="conhecimentoValor.{{@index}}" class="conhecimento-input" type="number" value="{{valor}}" min="0" />
+    </div>
+    {{/each}}
+  </div>
+  <button type="button" onclick="addLinha('conhecimentos')">Adicionar Conhecimento</button>
+
+  <hr>
+  <h3>Profissões</h3>
+  <div id="profissoes-lista">
+    {{#each profissoes as |valor nome|}}
+    <div class="profissao-linha">
+      <input name="profissaoNome.{{@index}}" type="text" value="{{nome}}" placeholder="Nome da profissão" />
+      <input name="profissaoValor.{{@index}}" class="profissao-input" type="number" value="{{valor}}" min="0" />
+    </div>
+    {{/each}}
+  </div>
+  <button type="button" onclick="addLinha('profissoes')">Adicionar Profissão</button>
+
+  <hr>
+  <h3>Atuações</h3>
+  <div id="atuacoes-lista">
+    {{#each atuacoes as |valor nome|}}
+    <div class="atuacao-linha">
+      <input name="atuacaoNome.{{@index}}" type="text" value="{{nome}}" placeholder="Nome da atuação" />
+      <input name="atuacaoValor.{{@index}}" class="atuacao-input" type="number" value="{{valor}}" min="0" />
+    </div>
+    {{/each}}
+  </div>
+  <button type="button" onclick="addLinha('atuacoes')">Adicionar Atuação</button>
 
   <hr>
   <button type="submit" id="submit-button">Salvar</button>
@@ -58,12 +106,9 @@
     const restantesEl = document.getElementById("pontos-restantes");
     const submitBtn = document.getElementById("submit-button");
 
-    const skillInputs = document.querySelectorAll(".skill-input");
-    const idiomaInputs = document.querySelectorAll(".idioma-input");
-
     let gastos = 0;
 
-    skillInputs.forEach(input => {
+    document.querySelectorAll(".skill-input").forEach(input => {
       const pontos = parseInt(input.value) || 0;
       gastos += pontos;
 
@@ -72,62 +117,52 @@
 
       const modAttr = parseInt(row.querySelector("td:nth-child(3)")?.textContent) || 0;
       const modExtra = parseInt(row.querySelector(".mod-input")?.value || 0);
+      const prof = pontos > 0 ? (window._actorProfBonus || 2) : 0;
+
       const isIdioma = row.dataset.skillKey?.startsWith("idiomas_");
 
-      const prof = (pontos > 0) ? (game.user.character?.system?.attributes?.prof || 0) : 0;
-
-      let totalMod = 0;
-
-      if (isIdioma) {
-        totalMod = pontos + prof;
-      } else if (pontos > 0) {
-        totalMod = pontos + modAttr + prof + modExtra;
-      } else {
-        totalMod = modAttr;
-      }
+      let totalMod = isIdioma
+        ? pontos + prof
+        : pontos > 0
+          ? pontos + modAttr + modExtra + prof
+          : modAttr;
 
       const cell = row.querySelector(".skill-total");
       if (cell) cell.textContent = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
     });
 
-    idiomaInputs.forEach(input => {
-      const pontos = parseInt(input.value) || 0;
-      gastos += pontos;
+
+    ["idioma", "oficio", "conhecimento", "profissao", "atuacao"].forEach(tipo => {
+      document.querySelectorAll(`.${tipo}-input`).forEach(input => {
+        const pontos = parseInt(input.value) || 0;
+        gastos += pontos;
+      });
     });
 
     gastosEl.textContent = gastos;
     const restantes = total - gastos;
     restantesEl.textContent = restantes;
 
-    if (restantes < 0) {
-      restantesEl.style.color = "red";
-      submitBtn.disabled = true;
-    } else {
-      restantesEl.style.color = "";
-      submitBtn.disabled = false;
-    }
+    restantesEl.style.color = restantes < 0 ? "red" : "";
+    submitBtn.disabled = restantes < 0;
   }
 
-  function addIdioma() {
-    const container = document.getElementById("idiomas-lista");
+  function addLinha(tipo) {
+    const container = document.getElementById(`${tipo}-lista`);
     const index = container.children.length;
     const div = document.createElement("div");
-    div.className = "idioma-linha";
+    div.className = `${tipo}-linha`;
     div.innerHTML = `
-      <input name="idiomaNome.${index}" type="text" placeholder="Nome do idioma" />
-      <input name="idiomaValor.${index}" class="idioma-input" type="number" value="0" min="0" />
+      <input name="${tipo}Nome.${index}" type="text" placeholder="Nome" />
+      <input name="${tipo}Valor.${index}" class="${tipo}-input" type="number" value="0" min="0" />
     `;
     container.appendChild(div);
-    div.querySelector(".idioma-input").addEventListener("input", atualizarResumo);
+    div.querySelector(`.${tipo}-input`).addEventListener("input", atualizarResumo);
     atualizarResumo();
   }
 
-  document.addEventListener("input", (event) => {
-    if (
-      event.target.matches(".skill-input") ||
-      event.target.matches(".mod-input") ||
-      event.target.matches(".idioma-input")
-    ) {
+  document.addEventListener("input", e => {
+    if (e.target.matches(".skill-input, .mod-input, .idioma-input, .oficio-input, .conhecimento-input, .profissao-input, .atuacao-input")) {
       atualizarResumo();
     }
   });
@@ -140,6 +175,7 @@
       ui.notifications.warn("Você gastou mais pontos do que o disponível.");
     }
   });
+  window._actorProfBonus = game.actors.get(game.user.character?.id)?.system?.attributes?.prof || 2;
 
   atualizarResumo();
 </script>
