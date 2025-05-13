@@ -3,7 +3,11 @@
     "title": "Skill Point System",
     "description": "Substitui as perícias e permite alocar pontos manualmente.",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "version": "1.0.2",
+=======
+    "version": "1.0.0",
+>>>>>>> parent of 03ea233 (adding skill tree, modifier computation and new character sheet.)
 =======
     "version": "1.0.0",
 >>>>>>> parent of 03ea233 (adding skill tree, modifier computation and new character sheet.)
@@ -21,9 +25,12 @@
     "url": "https://github.com/seuusuario/my-skill-system",
     "manifest": "https://raw.githubusercontent.com/caiocgomes/my-skill-system/refs/heads/main/module.json",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "download": "https://github.com/caiocgomes/my-skill-system/archive/refs/tags/v1.0.2.zip"
 }
 =======
+=======
+>>>>>>> parent of 03ea233 (adding skill tree, modifier computation and new character sheet.)
     "download": "https://github.com/caiocgomes/my-skill-system/archive/refs/tags/v1.0.0.zip"
   }
   

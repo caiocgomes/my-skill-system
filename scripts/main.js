@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 Hooks.once("init", () => {
   console.log("Skill System | Inicializando módulo...");
 
@@ -245,6 +246,9 @@ class SkillPointAllocator extends FormApplication {
     return { skills, totalPoints };
 =======
 Hooks.once("init", () => {
+=======
+Hooks.once("init", () => {
+>>>>>>> parent of 03ea233 (adding skill tree, modifier computation and new character sheet.)
     console.log("Skill System | Inicializando módulo...");
   
     // 1. Substitui a árvore de perícias do dnd5e
