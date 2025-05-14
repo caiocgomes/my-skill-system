@@ -83,11 +83,11 @@ Quando um personagem precisa testar uma perícia em condições ideais ou no mí
  
 ## Lista de Perícias de Classe
 
-Artífice: Abrir Fechaduras, Avaliação, Concentração, Conhecimento (Arquitetura/Engenharia e Arcano), Desativar Dispositivos, Falsificação, Investigação, Magifício, Montaria, Ofício (qualquer), Profissão (qualquer), Usar Cordas.
-Bardo: Acrobacia, Avaliação, Atuação, Coletar Informações, Concentração, Conhecimento (qualquer), Decifrar Escrita, Disfarce, Enganação, Equilíbrio, Escalar, Escapar, Esconder-se, Falsificação, Idiomas, Intimidação, Magifício, Montaria, Mover-se em Silêncio, Natação, Ofício (qualquer), Ouvir, persuasão, Prestidigitação, Profissão (qualquer), Salto, Sentir Motivação, Usar Cordas, Usar Dispositivo Mágico, Ver.
-Bárbaro: Agarrar, Conhecimento (Natureza), Correr, Escalar, Intimidação, Lidar com Animais, Montaria, Mover-se em Silêncio, Natação, Ofício (qualquer), Ouvir, Profissão (qualquer), Salto, Sobrevivência.
-Clérigo: Concentração, Conhecimento (História/Arcano/Planar/Religião), Cura, Magifício, Montaria, Ofício (qualquer), Profissão (qualquer), Sentir Motivação, Ver.
-Guerreiro: Correr, Escalar, Intimidação, Lidar com Animais, Montaria, Natação, Ofício (qualquer), Profissão (qualquer), Salto.
+- Artífice: Abrir Fechaduras, Avaliação, Concentração, Conhecimento (Arquitetura/Engenharia e Arcano), Desativar Dispositivos, Falsificação, Investigação, Magifício, Montaria, Ofício (qualquer), Profissão (qualquer), Usar Cordas.
+- Bardo: Acrobacia, Avaliação, Atuação, Coletar Informações, Concentração, Conhecimento (qualquer), Decifrar Escrita, Disfarce, Enganação, Equilíbrio, Escalar, Escapar, Esconder-se, Falsificação, Idiomas, Intimidação, Magifício, Montaria, Mover-se em Silêncio, Natação, Ofício (qualquer), Ouvir, persuasão, Prestidigitação, Profissão (qualquer), Salto, Sentir Motivação, Usar Cordas, Usar Dispositivo Mágico, Ver.
+- Bárbaro: Agarrar, Conhecimento (Natureza), Correr, Escalar, Intimidação, Lidar com Animais, Montaria, Mover-se em Silêncio, Natação, Ofício (qualquer), Ouvir, Profissão (qualquer), Salto, Sobrevivência.
+- Clérigo: Concentração, Conhecimento (História/Arcano/Planar/Religião), Cura, Magifício, Montaria, Ofício (qualquer), Profissão (qualquer), Sentir Motivação, Ver.
+- Guerreiro: Correr, Escalar, Intimidação, Lidar com Animais, Montaria, Natação, Ofício (qualquer), Profissão (qualquer), Salto.
 
 
 ## Armaduras e Desvantagem em Perícias
