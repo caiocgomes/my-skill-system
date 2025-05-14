@@ -27,12 +27,12 @@ Para Perícias que vocês testem sem treino: 1d20 + Atributo
 
 ## Dificuldades para Testes
 
-10: Trivial, que não impressiona ninguém.
-15: Mediana, que claramente requer alguma habilidade.
-20: Impressionante, que separa os amadores dos profissionais.
-25: Espetacular, que separa os profissionais dos mestres.
-30: Épica, que separa os mestres das lendas.
-40+: Virtualmente impossível, que rivaliza com feitos de magia.
+- 10: Trivial, que não impressiona ninguém.
+- 15: Mediana, que claramente requer alguma habilidade.
+- 20: Impressionante, que separa os amadores dos profissionais.
+- 25: Espetacular, que separa os profissionais dos mestres.
+- 30: Épica, que separa os mestres das lendas.
+- 40+: Virtualmente impossível, que rivaliza com feitos de magia.
 
 
 ## Regra do 10 e Regra do 20
