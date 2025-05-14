@@ -325,17 +325,6 @@ async function reconstruirGrupo(data, campo, actor) {
     if (nome) novos[nome] = valor;
   }
 
-  const flagKey = `skills${capitalize(campo)}`;
-
-  const antigos = (await actor.getFlag("my-skill-system", flagKey)) || {};
-
-  // Detecta chaves removidas
-  const removidos = Object.keys(antigos).filter((nome) => !(nome in novos));
-
-  if (removidos.length > 0) {
-    await actor.unsetFlag("my-skill-system", flagKey); // limpa tudo se teve alguma remoção
-  }
-
   return novos;
 }
 
