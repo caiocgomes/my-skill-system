@@ -178,86 +178,119 @@ class SkillPointAllocator extends FormApplication {
     });
   }
 
-  async getData() {
-    const current = await this.actor.getFlag("my-skill-system", "skills") || {};
-    const extras = await this.actor.getFlag("my-skill-system", "skillMods") || {};
-    const idiomas = await this.actor.getFlag("my-skill-system", "skillsIdiomas") || {};
-    const oficios = await this.actor.getFlag("my-skill-system", "skillsOficios") || {};
-    const conhecimentos = await this.actor.getFlag("my-skill-system", "skillsConhecimentos") || {};
-    const profissoes = await this.actor.getFlag("my-skill-system", "skillsProfissoes") || {};
-    const atuacoes = await this.actor.getFlag("my-skill-system", "skillsAtuacoes") || {};
-    const totalPoints = calcularPontosPericia(this.actor);
+async getData() {
+  const current = await this.actor.getFlag("my-skill-system", "skills") || {};
+  const extras = await this.actor.getFlag("my-skill-system", "skillMods") || {};
+  const rawIdiomas = await this.actor.getFlag("my-skill-system", "skillsIdiomas") || {};
+  const rawOficios = await this.actor.getFlag("my-skill-system", "skillsOficios") || {};
+  const rawConhecimentos = await this.actor.getFlag("my-skill-system", "skillsConhecimentos") || {};
+  const rawProfissoes = await this.actor.getFlag("my-skill-system", "skillsProfissoes") || {};
+  const rawAtuacoes = await this.actor.getFlag("my-skill-system", "skillsAtuacoes") || {};
+  const totalPoints = calcularPontosPericia(this.actor);
 
-    const habilidades = this.actor.system.abilities;
-    const prof = this.actor.system.attributes.prof || 0;
+  const habilidades = this.actor.system.abilities;
+  const prof = this.actor.system.attributes.prof || 0;
 
-    const skills = Object.entries(CONFIG.DND5E.skills).reduce((acc, [key, meta]) => {
-      const pontos = current[key] || 0;
-      const modAttr = meta.ability ? habilidades[meta.ability].mod : 0;
-      const modExtra = extras[key] || 0;
-      const modProf = pontos > 0 ? prof : 0;
-      const total = modAttr + pontos + modExtra + modProf;
+  const skills = Object.entries(CONFIG.DND5E.skills).reduce((acc, [key, meta]) => {
+    const pontos = current[key] || 0;
+    const modAttr = meta.ability ? habilidades[meta.ability].mod : 0;
+    const modExtra = extras[key] || 0;
+    const modProf = pontos > 0 ? prof : 0;
+    const total = modAttr + pontos + modExtra + modProf;
 
-      acc[key] = {
-        label: meta.label,
-        ability: meta.ability?.toUpperCase() || "-",
-        modAttr,
-        modExtra,
-        prof: modProf,
-        pontos,
-        total
-      };
-      return acc;
-    }, {});
+    acc[key] = {
+      label: meta.label,
+      ability: meta.ability?.toUpperCase() || "-",
+      modAttr,
+      modExtra,
+      prof: modProf,
+      pontos,
+      total
+    };
+    return acc;
+  }, {});
 
-    return { skills, idiomas, oficios, conhecimentos, profissoes, atuacoes, totalPoints };
+  // Converte os objetos personalizados para arrays legíveis no Handlebars
+  const idiomas = Object.entries(rawIdiomas).map(([nome, valor]) => ({ nome, valor }));
+  const oficios = Object.entries(rawOficios).map(([nome, valor]) => ({ nome, valor }));
+  const conhecimentos = Object.entries(rawConhecimentos).map(([nome, valor]) => ({ nome, valor }));
+  const profissoes = Object.entries(rawProfissoes).map(([nome, valor]) => ({ nome, valor }));
+  const atuacoes = Object.entries(rawAtuacoes).map(([nome, valor]) => ({ nome, valor }));
+
+  return {
+    skills,
+    idiomas,
+    oficios,
+    conhecimentos,
+    profissoes,
+    atuacoes,
+    totalPoints
+  };
+}
+
+
+async _updateObject(_, formData) {
+  console.log(formData);
+  const data = expandObject(formData);
+  console.log("data: ",data)
+  const idiomas = {};
+  const nomesIdioma = data.idiomaNome || [];
+  const valoresIdioma = data.idiomaValor || [];
+  console.log(nomesIdioma)
+  for (let i = 0; i < nomesIdioma.length; i++) {
+    const nome = nomesIdioma[i]?.trim();
+    const valor = parseInt(valoresIdioma[i]) || 0;
+    console.log("nome: ",nome);
+    console.log("valor: ",valor);
+    if (nome) idiomas[nome] = valor;
+  }
+  console.log("idiomas: ",idiomas)
+  const oficios = {};
+  const nomesOficio = data.oficioNome || [];
+  const valoresOficio = data.oficioValor || [];
+  for (let i = 0; i < nomesOficio.length; i++) {
+    const nome = nomesOficio[i]?.trim();
+    const valor = parseInt(valoresOficio[i]) || 0;
+        console.log("nome: ",nome);
+    console.log("valor: ",valor);
+    if (nome) oficios[nome] = valor;
+  }
+  console.log("oficios: ",oficios)
+  const conhecimentos = {};
+  const nomesConhecimento = data.conhecimentoNome || [];
+  const valoresConhecimento = data.conhecimentoValor || [];
+  for (let i = 0; i < nomesConhecimento.length; i++) {
+    const nome = nomesConhecimento[i]?.trim();
+    const valor = parseInt(valoresConhecimento[i]) || 0;
+    if (nome) conhecimentos[nome] = valor;
   }
 
-  async _updateObject(_, formData) {
-    const data = expandObject(formData);
-
-    const idiomas = {};
-    for (let i = 0; data.idiomaNome?.[i]; i++) {
-      const nome = data.idiomaNome[i].trim();
-      const valor = parseInt(data.idiomaValor[i]) || 0;
-      if (nome) idiomas[nome] = valor;
-    }
-
-    const oficios = {};
-    for (let i = 0; data.oficioNome?.[i]; i++) {
-      const nome = data.oficioNome[i].trim();
-      const valor = parseInt(data.oficioValor[i]) || 0;
-      if (nome) oficios[nome] = valor;
-    }
-
-    const conhecimentos = {};
-    for (let i = 0; data.conhecimentoNome?.[i]; i++) {
-      const nome = data.conhecimentoNome[i].trim();
-      const valor = parseInt(data.conhecimentoValor[i]) || 0;
-      if (nome) conhecimentos[nome] = valor;
-    }
-
-    const profissoes = {};
-    for (let i = 0; data.profissaoNome?.[i]; i++) {
-      const nome = data.profissaoNome[i].trim();
-      const valor = parseInt(data.profissaoValor[i]) || 0;
-      if (nome) profissoes[nome] = valor;
-    }
-
-    const atuacoes = {};
-    for (let i = 0; data.atuacaoNome?.[i]; i++) {
-      const nome = data.atuacaoNome[i].trim();
-      const valor = parseInt(data.atuacaoValor[i]) || 0;
-      if (nome) atuacoes[nome] = valor;
-    }
-
-    await this.actor.setFlag("my-skill-system", "skills", data.skills);
-    await this.actor.setFlag("my-skill-system", "skillsIdiomas", idiomas);
-    await this.actor.setFlag("my-skill-system", "skillsOficios", oficios);
-    await this.actor.setFlag("my-skill-system", "skillsConhecimentos", conhecimentos);
-    await this.actor.setFlag("my-skill-system", "skillsProfissoes", profissoes);
-    await this.actor.setFlag("my-skill-system", "skillsAtuacoes", atuacoes);
+  const profissoes = {};
+  const nomesProfissao = data.profissaoNome || [];
+  const valoresProfissao = data.profissaoValor || [];
+  for (let i = 0; i < nomesProfissao.length; i++) {
+    const nome = nomesProfissao[i]?.trim();
+    const valor = parseInt(valoresProfissao[i]) || 0;
+    if (nome) profissoes[nome] = valor;
   }
+
+  const atuacoes = {};
+  const nomesAtuacao = data.atuacaoNome || [];
+  const valoresAtuacao = data.atuacaoValor || [];
+  for (let i = 0; i < nomesAtuacao.length; i++) {
+    const nome = nomesAtuacao[i]?.trim();
+    const valor = parseInt(valoresAtuacao[i]) || 0;
+    if (nome) atuacoes[nome] = valor;
+  }
+
+  await this.actor.setFlag("my-skill-system", "skills", data.skills);
+  await this.actor.setFlag("my-skill-system", "skillsIdiomas", idiomas);
+  await this.actor.setFlag("my-skill-system", "skillsOficios", oficios);
+  await this.actor.setFlag("my-skill-system", "skillsConhecimentos", conhecimentos);
+  await this.actor.setFlag("my-skill-system", "skillsProfissoes", profissoes);
+  await this.actor.setFlag("my-skill-system", "skillsAtuacoes", atuacoes);
+}
+
 }
 
 Hooks.on("renderActorSheet5eCharacter", (app, html, data) => {
@@ -314,7 +347,7 @@ Hooks.on("renderActorSheet5eCharacter", (app, html, data) => {
 
     novaLista.append(li);
   }
-
+  console.log(novaLista);
   const container = $(`<div class="custom-skill-container" style="max-height: 65vh; overflow-y: auto;"></div>`);
   container.append(novaLista);
   originalSkillSection.empty().append(container);

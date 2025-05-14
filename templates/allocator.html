@@ -38,34 +38,36 @@
   <hr>
   <h3>Idiomas</h3>
   <div id="idiomas-lista">
-    {{#each idiomas as |valor nome|}}
+    {{#each idiomas}}
     <div class="idioma-linha">
-      <input name="idiomaNome.{{@index}}" type="text" value="{{nome}}" placeholder="Nome do idioma" />
-      <input name="idiomaValor.{{@index}}" class="idioma-input" type="number" value="{{valor}}" min="0" />
+      <input name="idiomaNome.{{@index}}" type="text" value="{{this.nome}}" placeholder="Nome do idioma" />
+      <input name="idiomaValor.{{@index}}" class="idioma-input" type="number" value="{{this.valor}}" min="0" />
     </div>
     {{/each}}
   </div>
+  
   <button type="button" onclick="addLinha('idiomas')">Adicionar Idioma</button>
 
   <hr>
   <h3>Ofícios</h3>
   <div id="oficios-lista">
-    {{#each oficios as |valor nome|}}
+    {{#each oficios}}
     <div class="oficio-linha">
-      <input name="oficioNome.{{@index}}" type="text" value="{{nome}}" placeholder="Nome do ofício" />
-      <input name="oficioValor.{{@index}}" class="oficio-input" type="number" value="{{valor}}" min="0" />
+      <input name="oficioNome.{{@index}}" type="text" value="{{this.nome}}" placeholder="Nome do ofício" />
+      <input name="oficioValor.{{@index}}" class="oficio-input" type="number" value="{{this.valor}}" min="0" />
     </div>
     {{/each}}
   </div>
+  
   <button type="button" onclick="addLinha('oficios')">Adicionar Ofício</button>
 
   <hr>
   <h3>Conhecimentos</h3>
   <div id="conhecimentos-lista">
-    {{#each conhecimentos as |valor nome|}}
+    {{#each conhecimentos}}
     <div class="conhecimento-linha">
-      <input name="conhecimentoNome.{{@index}}" type="text" value="{{nome}}" placeholder="Nome do conhecimento" />
-      <input name="conhecimentoValor.{{@index}}" class="conhecimento-input" type="number" value="{{valor}}" min="0" />
+      <input name="conhecimentoNome.{{@index}}" type="text" value="{{this.nome}}" placeholder="Nome do conhecimento" />
+      <input name="conhecimentoValor.{{@index}}" class="conhecimento-input" type="number" value="{{this.valor}}" min="0" />
     </div>
     {{/each}}
   </div>
@@ -74,10 +76,10 @@
   <hr>
   <h3>Profissões</h3>
   <div id="profissoes-lista">
-    {{#each profissoes as |valor nome|}}
+    {{#each profissoes}}
     <div class="profissao-linha">
-      <input name="profissaoNome.{{@index}}" type="text" value="{{nome}}" placeholder="Nome da profissão" />
-      <input name="profissaoValor.{{@index}}" class="profissao-input" type="number" value="{{valor}}" min="0" />
+      <input name="profissaoNome.{{@index}}" type="text" value="{{this.nome}}" placeholder="Nome da profissão" />
+      <input name="profissaoValor.{{@index}}" class="profissao-input" type="number" value="{{this.valor}}" min="0" />
     </div>
     {{/each}}
   </div>
@@ -86,13 +88,14 @@
   <hr>
   <h3>Atuações</h3>
   <div id="atuacoes-lista">
-    {{#each atuacoes as |valor nome|}}
+    {{#each atuacoes}}
     <div class="atuacao-linha">
-      <input name="atuacaoNome.{{@index}}" type="text" value="{{nome}}" placeholder="Nome da atuação" />
-      <input name="atuacaoValor.{{@index}}" class="atuacao-input" type="number" value="{{valor}}" min="0" />
+      <input name="atuacaoNome.{{@index}}" type="text" value="{{this.nome}}" placeholder="Nome da atuação" />
+      <input name="atuacaoValor.{{@index}}" class="atuacao-input" type="number" value="{{this.valor}}" min="0" />
     </div>
     {{/each}}
   </div>
+  
   <button type="button" onclick="addLinha('atuacoes')">Adicionar Atuação</button>
 
   <hr>
