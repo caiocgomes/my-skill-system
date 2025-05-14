@@ -45,7 +45,7 @@
     </div>
     {{/each}}
   </div>
-  
+
   <button type="button" onclick="addLinha('idiomas')">Adicionar Idioma</button>
 
   <hr>
@@ -58,7 +58,7 @@
     </div>
     {{/each}}
   </div>
-  
+
   <button type="button" onclick="addLinha('oficios')">Adicionar Ofício</button>
 
   <hr>
@@ -67,7 +67,8 @@
     {{#each conhecimentos}}
     <div class="conhecimento-linha">
       <input name="conhecimentoNome.{{@index}}" type="text" value="{{this.nome}}" placeholder="Nome do conhecimento" />
-      <input name="conhecimentoValor.{{@index}}" class="conhecimento-input" type="number" value="{{this.valor}}" min="0" />
+      <input name="conhecimentoValor.{{@index}}" class="conhecimento-input" type="number" value="{{this.valor}}"
+        min="0" />
     </div>
     {{/each}}
   </div>
@@ -95,7 +96,7 @@
     </div>
     {{/each}}
   </div>
-  
+
   <button type="button" onclick="addLinha('atuacoes')">Adicionar Atuação</button>
 
   <hr>
@@ -153,22 +154,34 @@
   function addLinha(tipo) {
     const container = document.getElementById(`${tipo}-lista`);
     const index = container.children.length;
+
+    // mapeia nomes corretos
+    const singularPrefix = {
+      idiomas: "idioma",
+      oficios: "oficio",
+      conhecimentos: "conhecimento",
+      profissoes: "profissao",
+      atuacoes: "atuacao"
+    }[tipo];
+
     const div = document.createElement("div");
-    div.className = `${tipo}-linha`;
+    div.className = `${singularPrefix}-linha`;
     div.innerHTML = `
-      <input name="${tipo}Nome.${index}" type="text" placeholder="Nome" />
-      <input name="${tipo}Valor.${index}" class="${tipo}-input" type="number" value="0" min="0" />
-    `;
+    <input name="${singularPrefix}Nome.${index}" type="text" placeholder="Nome" />
+    <input name="${singularPrefix}Valor.${index}" class="${singularPrefix}-input" type="number" value="0" min="0" />
+  `;
     container.appendChild(div);
-    div.querySelector(`.${tipo}-input`).addEventListener("input", atualizarResumo);
+    div.querySelector(`.${singularPrefix}-input`).addEventListener("input", atualizarResumo);
     atualizarResumo();
   }
+
 
   document.addEventListener("input", e => {
     if (e.target.matches(".skill-input, .mod-input, .idioma-input, .oficio-input, .conhecimento-input, .profissao-input, .atuacao-input")) {
       atualizarResumo();
     }
   });
+
 
   document.getElementById("skill-form").addEventListener("submit", function (e) {
     const total = parseInt(document.getElementById("total-pontos").textContent);
