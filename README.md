@@ -7,10 +7,10 @@ Cada personagem começa no nível 1 com pontos de perícia relativos à sua clas
 
 ## Pontos de Perícia por Classe
 
-Guerreiro e Mago: 2 + modificador de Inteligência. (x3 no primeiro nível)
-Artífice, Clérigo, Druida e Feiticeiro: 3 + modificador de Inteligência. (x3 no primeiro nível)
-Bárbaro, Monge, Ranger, Paladino e Bruxo: 4 + modificador de Inteligência. (x3 no primeiro nível)
-Bardo e Ladino: 5 + modificador de Inteligência. (x3 no primeiro nível)
+- Guerreiro e Mago: 2 + modificador de Inteligência. (x3 no primeiro nível)
+- Artífice, Clérigo, Druida e Feiticeiro: 3 + modificador de Inteligência. (x3 no primeiro nível)
+- Bárbaro, Monge, Ranger, Paladino e Bruxo: 4 + modificador de Inteligência. (x3 no primeiro nível)
+- Bardo e Ladino: 5 + modificador de Inteligência. (x3 no primeiro nível)
 
 Esse número representa o quanto do treinamento inicial padrão naquela classe depende do estudo de perícias. Para bardos e ladinos as perícias são a maior parte do treinamento, enquanto para Magos e Guerreiros o treinamento quase todo envolve estudar técnicas e conhecimentos representados em outras áreas da ficha, como proficiência em armas ou memorização de magias. Cada classe de personagem tem sua lista de perícias de classe, nas quais os testes somam seu bônus de proficiência. Perícias de classe podem ser compradas em até seu nível de personagem +1 pontos (um personagem de nível 4 pode ter até 5 pontos), enquanto as de outras classes podem ser compradas em até seu nível. Testes são feitos rolando 1d20 e somando o atributo-chave, os pontos gastos naquela perícia e, para as perícias de classe, o bônus de proficiência.
 
@@ -27,12 +27,12 @@ Para Perícias que vocês testem sem treino: 1d20 + Atributo
 
 ## Dificuldades para Testes
 
-10: Trivial, que não impressiona ninguém.
-15: Mediana, que claramente requer alguma habilidade.
-20: Impressionante, que separa os amadores dos profissionais.
-25: Espetacular, que separa os profissionais dos mestres.
-30: Épica, que separa os mestres das lendas.
-40+: Virtualmente impossível, que rivaliza com feitos de magia.
+- 10: Trivial, que não impressiona ninguém.
+- 15: Mediana, que claramente requer alguma habilidade.
+- 20: Impressionante, que separa os amadores dos profissionais.
+- 25: Espetacular, que separa os profissionais dos mestres.
+- 30: Épica, que separa os mestres das lendas.
+- 40+: Virtualmente impossível, que rivaliza com feitos de magia.
 
 
 ## Regra do 10 e Regra do 20
