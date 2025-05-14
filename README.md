@@ -1,6 +1,6 @@
 # Points Skill System
 
-Esse modulo serve pra reativar o sistema de pontos no Dnd5e. O sistema de skills do 5e é bastante simplificado, e acaba gerando personagens com poucas variedades. Para isso, adotamos uma house-rule que utiliza a arvore de pericias do DnD 3.5. 
+Esse modulo serve pra reativar o sistema de pontos no DnD 5e. O sistema de skills do 5e é bastante simplificado, e acaba gerando personagens com poucas variedades. Para isso, adotamos uma house-rule que utiliza a arvore de pericias do DnD 3.5. 
 
 Cada personagem começa no nível 1 com pontos de perícia relativos à sua classe, mais seu modificador de Inteligência, vezes três, e ganha a mesma quantidade (sem o x3) a cada novo nível de experiência alcançado.
 
