@@ -57,7 +57,13 @@ Hooks.once("init", () => {
       const atuacoes = this.getFlag("my-skill-system", "skillsAtuacoes") || {};
       const prof = this.system.attributes.prof || 0;
 
-      for (const [key, meta] of Object.entries(skills)) {
+      const sortedSkills = Object.entries(allSkills).sort((a, b) => {
+        const labelA = a[1].label?.toLowerCase?.() || a[0];
+        const labelB = b[1].label?.toLowerCase?.() || b[0];
+        return labelA.localeCompare(labelB, "pt-BR");
+      });
+
+      for (const [key, meta] of sortedSkills) {
         const pontos = flags[key] || 0;
         const modAtributo = meta.ability ? data.abilities[meta.ability].mod : 0;
         const modFinal = pontos > 0 ? pontos + modAtributo + prof : modAtributo;
