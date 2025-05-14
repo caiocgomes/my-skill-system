@@ -42,44 +42,44 @@ Quando um personagem precisa testar uma perícia em condições ideais ou no mí
 
 ## Lista de Perícias
 
-• Abrir Fechadura (Destreza; Treinada apenas) – Destrancar fechaduras usando ferramentas.
-• Acrobacia (Destreza; Treinada apenas) Realizar manobras ágeis como rolamentos, saltos mortais e esquivas.
-• Agarrar (Força) – Estabelecer e manter agarrões em combate, segurar firme e erguer objetos pesados.
-• Avaliação (Inteligência) – Avaliar a autenticidade e estimar o valor de objetos.
-• Atuação (Carisma) – Entreter com música, dança, atuação, poesia, etc.
-• Coletar Informação (Carisma) – Obter rumores e dados conversando em locais públicos.
-• Concentração (Constituição) – Manter o foco apesar de distrações ou dano.
-• Conhecimento (Inteligência; Treinada apenas) – Saber fatos sobre assuntos específicos (Arcano, Arquitetura/Engenharia, Dungeons, História, Geografia, Região, Natureza, Nobreza/Realeza, Religião, Planar)
-• Correr (Constituição) – Disparar em alta velocidade ou manter um ritmo prolongado de corrida.
-• Cura (Sabedoria) – Prestar primeiros socorros, tratar doenças e venenos.
-• Decifrar Escrita (Inteligência; Treinada apenas) – Ler documentos em idiomas desconhecidos ou codificados.
-• Desativar Dispositivo (Inteligência; Treinada apenas) – Desarmar armadilhas e destrancar mecanismos complexos.
-• Disfarce (Carisma) – Alterar a aparência para se passar por outra pessoa ou identidade.
-• Enganação (Carisma) – Enganar ou mentir de forma convincente.
-• Equilíbrio (Destreza) – Manter-se firme em superfícies estreitas ou escorregadias.
-• Escalar (Força) – Subir paredes, árvores ou penhascos.
-• Escapar (Destreza) – Libertar-se de cordas, algemas ou agarrões.
-• Esconder-se (Destreza) – Passar despercebido visualmente.
-• Falsificação (Inteligência) – Criar documentos ou objetos falsificados.
-• Idiomas (N/A) – Saber falar, ler e escrever em uma língua que não seu idioma nativo.
-• Intimidação (Carisma) – Coagir ou amedrontar outros.
-• Investigação (Inteligência) – Encontrar objetos escondidos, passagens secretas ou armadilhas.
-• Lidar com Animais  (Sabedoria; Treinada apenas) – Treinar, acalmar ou conduzir animais.
-• Magifício (Inteligência; Treinada apenas) – Reconhecer feitiços e efeitos mágicos e identificar armadilhas mágicas.
-• Montaria (Destreza) – Controlar e guiar montarias como cavalos.
-• Mover-se em Silêncio (Destreza) – Andar sem fazer barulho.
-• Natação (Constituição) – Nadar em lagos, rios ou mares, escapar ou salvar de afogamento.
-• Ofício (Inteligência) – Criar objetos ou realizar trabalhos (Alquimia, Armaduras, Armas, Arcos/Flechas, Bebidas, Culinária, Escultura, Ferragens, Joalheria, Marcenaria, Pintura, Tecelagem/Costura, Construção, Perfumaria, etc).
-• Ouvir (Sabedoria) – Detectar sons, conversas ou criaturas escondidas.
-• Persuasão(Carisma) – Convencer ou negociar de maneira educada.
-• Prestidigitação (Destreza; Treinada apenas) – Pequenos truques de manipulação manual, como roubar bolsos discretamente.
-• Profissão (Sabedoria; Treinada apenas) – Obter dinheiro com uma prática especializada. (Marinheiro, Minerador, Cervejeiro, Padeiro, Artista, Vendedor, Guarda, etc.).
-• Salto (Força) – Pular distâncias ou alturas.
-• Sentir Motivação (Sabedoria) – Julgar intenções ou detectar mentiras.
-• Sobrevivência (Sabedoria) – Viver em regiões selvagens, rastrear criaturas, evitar se perder.
-• Usar Corda (Destreza) – Amarrar, desfazer ou utilizar cordas de maneira eficaz.
-• Usar Dispositivo Mágico (Carisma; Treinada apenas) – Manipular itens mágicos sem o treinamento adequado.
-• Ver (Sabedoria) – Notar detalhes visuais e movimentos furtivos.
+- Abrir Fechadura (Destreza; Treinada apenas) – Destrancar fechaduras usando ferramentas.
+- Acrobacia (Destreza; Treinada apenas) Realizar manobras ágeis como rolamentos, saltos mortais e esquivas.
+- Agarrar (Força) – Estabelecer e manter agarrões em combate, segurar firme e erguer objetos pesados.
+- Avaliação (Inteligência) – Avaliar a autenticidade e estimar o valor de objetos.
+- Atuação (Carisma) – Entreter com música, dança, atuação, poesia, etc.
+- Coletar Informação (Carisma) – Obter rumores e dados conversando em locais públicos.
+- Concentração (Constituição) – Manter o foco apesar de distrações ou dano.
+- Conhecimento (Inteligência; Treinada apenas) – Saber fatos sobre assuntos específicos (Arcano, Arquitetura/Engenharia, Dungeons, História, Geografia, Região, Natureza, Nobreza/Realeza, Religião, Planar)
+- Correr (Constituição) – Disparar em alta velocidade ou manter um ritmo prolongado de corrida.
+- Cura (Sabedoria) – Prestar primeiros socorros, tratar doenças e venenos.
+- Decifrar Escrita (Inteligência; Treinada apenas) – Ler documentos em idiomas desconhecidos ou codificados.
+- Desativar Dispositivo (Inteligência; Treinada apenas) – Desarmar armadilhas e destrancar mecanismos complexos.
+- Disfarce (Carisma) – Alterar a aparência para se passar por outra pessoa ou identidade.
+- Enganação (Carisma) – Enganar ou mentir de forma convincente.
+- Equilíbrio (Destreza) – Manter-se firme em superfícies estreitas ou escorregadias.
+- Escalar (Força) – Subir paredes, árvores ou penhascos.
+- Escapar (Destreza) – Libertar-se de cordas, algemas ou agarrões.
+- Esconder-se (Destreza) – Passar despercebido visualmente.
+- Falsificação (Inteligência) – Criar documentos ou objetos falsificados.
+- Idiomas (N/A) – Saber falar, ler e escrever em uma língua que não seu idioma nativo.
+- Intimidação (Carisma) – Coagir ou amedrontar outros.
+- Investigação (Inteligência) – Encontrar objetos escondidos, passagens secretas ou armadilhas.
+- Lidar com Animais  (Sabedoria; Treinada apenas) – Treinar, acalmar ou conduzir animais.
+- Magifício (Inteligência; Treinada apenas) – Reconhecer feitiços e efeitos mágicos e identificar armadilhas mágicas.
+- Montaria (Destreza) – Controlar e guiar montarias como cavalos.
+- Mover-se em Silêncio (Destreza) – Andar sem fazer barulho.
+- Natação (Constituição) – Nadar em lagos, rios ou mares, escapar ou salvar de afogamento.
+- Ofício (Inteligência) – Criar objetos ou realizar trabalhos (Alquimia, Armaduras, Armas, Arcos/Flechas, Bebidas, Culinária, Escultura, Ferragens, Joalheria, Marcenaria, Pintura, Tecelagem/Costura, Construção, Perfumaria, etc).
+- Ouvir (Sabedoria) – Detectar sons, conversas ou criaturas escondidas.
+- Persuasão(Carisma) – Convencer ou negociar de maneira educada.
+- Prestidigitação (Destreza; Treinada apenas) – Pequenos truques de manipulação manual, como roubar bolsos discretamente.
+- Profissão (Sabedoria; Treinada apenas) – Obter dinheiro com uma prática especializada. (Marinheiro, Minerador, Cervejeiro, Padeiro, Artista, Vendedor, Guarda, etc.).
+- Salto (Força) – Pular distâncias ou alturas.
+- Sentir Motivação (Sabedoria) – Julgar intenções ou detectar mentiras.
+- Sobrevivência (Sabedoria) – Viver em regiões selvagens, rastrear criaturas, evitar se perder.
+- Usar Corda (Destreza) – Amarrar, desfazer ou utilizar cordas de maneira eficaz.
+- Usar Dispositivo Mágico (Carisma; Treinada apenas) – Manipular itens mágicos sem o treinamento adequado.
+- Ver (Sabedoria) – Notar detalhes visuais e movimentos furtivos.
  
 ## Lista de Perícias de Classe
 
