@@ -1,4 +1,3 @@
-
 Hooks.once("init", () => {
   console.log("Skill System | Inicializando módulo...");
 
@@ -7,7 +6,7 @@ Hooks.once("init", () => {
     acrobacia: { label: "Acrobacia", ability: "dex" },
     agarrar: { label: "Agarrar", ability: "str" },
     avaliacao: { label: "Avaliação", ability: "int" },
-    //atuacao: { label: "Atuação", ability: "cha" },
+    // atuacao: { label: "Atuação", ability: "cha" },
     coletarInformacao: { label: "Coletar Informação", ability: "cha" },
     concentracao: { label: "Concentração", ability: "con" },
     //conhecimento: { label: "Conhecimento", ability: "int" },
@@ -28,7 +27,7 @@ Hooks.once("init", () => {
     magificio: { label: "Magifício", ability: "int" },
     montaria: { label: "Montaria", ability: "dex" },
     moverSilencio: { label: "Mover-se em Silênçio", ability: "dex" },
-    natacao: { label: "Natação", ability: "con" },
+    natacao: { label: "Natação", ability: "str" },
     //oficio: { label: "Ofício", ability: "int" },
     ouvir: { label: "Ouvir", ability: "wis" },
     persuasao: { label: "Persuasão", ability: "cha" },
@@ -39,88 +38,95 @@ Hooks.once("init", () => {
     sobrevivencia: { label: "Sobrevivência", ability: "wis" },
     usarCorda: { label: "Usar Corda", ability: "dex" },
     usarDispositivoMagico: { label: "Usar Dispositivo Mágico", ability: "cha" },
-    ver: { label: "Ver", ability: "wis" }
+    ver: { label: "Ver", ability: "wis" },
   };
 
-  libWrapper.register("my-skill-system", "CONFIG.Actor.documentClass.prototype.getRollData", function (wrapped) {
-    const data = wrapped.call(this);
-    const skills = CONFIG.DND5E.skills;
-    const flags = this.getFlag("my-skill-system", "skills") || {};
-    const idiomas = this.getFlag("my-skill-system", "skillsIdiomas") || {};
-    const oficios = this.getFlag("my-skill-system", "skillsOficios") || {};
-    const conhecimentos = this.getFlag("my-skill-system", "skillsConhecimentos") || {};
-    const profissoes = this.getFlag("my-skill-system", "skillsProfissoes") || {};
-    const atuacoes = this.getFlag("my-skill-system", "skillsAtuacoes") || {};
-    const prof = this.system.attributes.prof || 0;
+  libWrapper.register(
+    "my-skill-system",
+    "CONFIG.Actor.documentClass.prototype.getRollData",
+    function (wrapped) {
+      const data = wrapped.call(this);
+      const skills = CONFIG.DND5E.skills;
+      const flags = this.getFlag("my-skill-system", "skills") || {};
+      const idiomas = this.getFlag("my-skill-system", "skillsIdiomas") || {};
+      const oficios = this.getFlag("my-skill-system", "skillsOficios") || {};
+      const conhecimentos =
+        this.getFlag("my-skill-system", "skillsConhecimentos") || {};
+      const profissoes =
+        this.getFlag("my-skill-system", "skillsProfissoes") || {};
+      const atuacoes = this.getFlag("my-skill-system", "skillsAtuacoes") || {};
+      const prof = this.system.attributes.prof || 0;
 
-    for (const [key, meta] of Object.entries(skills)) {
-      const pontos = flags[key] || 0;
-      const modAtributo = meta.ability ? data.abilities[meta.ability].mod : 0;
-      const modFinal = pontos > 0 ? pontos + modAtributo + prof : modAtributo;
+      for (const [key, meta] of Object.entries(skills)) {
+        const pontos = flags[key] || 0;
+        const modAtributo = meta.ability ? data.abilities[meta.ability].mod : 0;
+        const modFinal = pontos > 0 ? pontos + modAtributo + prof : modAtributo;
 
-      data.skills[key] = {
-        label: meta.label,
-        value: pontos,
-        mod: modFinal,
-        ability: meta.ability
-      };
-    }
+        data.skills[key] = {
+          label: meta.label,
+          value: pontos,
+          mod: modFinal,
+          ability: meta.ability,
+        };
+      }
 
-    for (const [idioma, pontos] of Object.entries(idiomas)) {
-      data.skills[`idiomas_${idioma}`] = {
-        label: `Idioma (${idioma})`,
-        value: pontos,
-        mod: pontos,
-        ability: null
-      };
-    }
+      for (const [idioma, pontos] of Object.entries(idiomas)) {
+        data.skills[`idiomas_${idioma}`] = {
+          label: `Idioma (${idioma})`,
+          value: pontos,
+          mod: pontos,
+          ability: null,
+        };
+      }
 
-    for (const [nome, pontos] of Object.entries(oficios)) {
-      const mod = data.abilities.int.mod;
-      const modFinal = pontos > 0 ? pontos + mod + prof : mod;
-      data.skills[`oficios_${nome}`] = {
-        label: `Ofício (${nome})`,
-        value: pontos,
-        mod: modFinal,
-        ability: "int"
-      };
-    }
+      for (const [nome, pontos] of Object.entries(oficios)) {
+        const mod = data.abilities.int.mod;
+        const modFinal = pontos > 0 ? pontos + mod + prof : mod;
+        data.skills[`oficios_${nome}`] = {
+          label: `Ofício (${nome})`,
+          value: pontos,
+          mod: modFinal,
+          ability: "int",
+        };
+      }
 
-    for (const [nome, pontos] of Object.entries(conhecimentos)) {
-      const mod = data.abilities.int.mod;
-      const modFinal = pontos > 0 ? pontos + mod + prof : mod;
-      data.skills[`conhecimentos_${nome}`] = {
-        label: `Conhecimento (${nome})`,
-        value: pontos,
-        mod: modFinal,
-        ability: "int"
-      };
-    }
+      for (const [nome, pontos] of Object.entries(conhecimentos)) {
+        const mod = data.abilities.int.mod;
+        const modFinal = pontos > 0 ? pontos + mod + prof : mod;
+        data.skills[`conhecimentos_${nome}`] = {
+          label: `Conhecimento (${nome})`,
+          value: pontos,
+          mod: modFinal,
+          ability: "int",
+        };
+      }
 
-    for (const [nome, pontos] of Object.entries(profissoes)) {
-      const mod = data.abilities.wis.mod;
-      const modFinal = pontos > 0 ? pontos + mod + prof : mod;
-      data.skills[`profissoes_${nome}`] = {
-        label: `Profissão (${nome})`,
-        value: pontos,
-        mod: modFinal,
-        ability: "wis"
-      };
-    }
+      for (const [nome, pontos] of Object.entries(profissoes)) {
+        const mod = data.abilities.wis.mod;
+        const modFinal = pontos > 0 ? pontos + mod + prof : mod;
+        data.skills[`profissoes_${nome}`] = {
+          label: `Profissão (${nome})`,
+          value: pontos,
+          mod: modFinal,
+          ability: "wis",
+        };
+      }
 
-    for (const [nome, pontos] of Object.entries(atuacoes)) {
-      const mod = data.abilities.cha.mod;
-      const modFinal = pontos > 0 ? pontos + mod + prof : mod;
-      data.skills[`atuacoes_${nome}`] = {
-        label: `Atuação (${nome})`,
-        value: pontos,
-        mod: modFinal,
-        ability: "cha"
-      };
-    }
+      for (const [nome, pontos] of Object.entries(atuacoes)) {
+        const mod = data.abilities.cha.mod;
+        const modFinal = pontos > 0 ? pontos + mod + prof : mod;
+        data.skills[`atuacoes_${nome}`] = {
+          label: `Atuação (${nome})`,
+          value: pontos,
+          mod: modFinal,
+          ability: "cha",
+        };
+      }
 
-    return data;
-  }, "WRAPPER");
+      return data;
+    },
+    "WRAPPER"
+  );
 
   Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
     if (!sheet.actor.isOwner) return;
@@ -128,15 +134,13 @@ Hooks.once("init", () => {
       label: "Perícias",
       class: "skill-allocator",
       icon: "fas fa-sliders-h",
-      onclick: () => new SkillPointAllocator(sheet.actor).render(true)
+      onclick: () => new SkillPointAllocator(sheet.actor).render(true),
     });
   });
 });
 
-
-
 function calcularPontosPericia(actor) {
-  const classe = actor.items.find(i => i.type === "class");
+  const classe = actor.items.find((i) => i.type === "class");
   const nomeClasse = classe?.name?.toLowerCase() || "";
   const intMod = actor.system.abilities.int.mod || 0;
   const nivel = actor.system.details.level || 1;
@@ -154,7 +158,7 @@ function calcularPontosPericia(actor) {
     paladin: 4,
     warlock: 4,
     bard: 5,
-    rogue: 5
+    rogue: 5,
   };
 
   const base = pontosPorClasse[nomeClasse] ?? 2;
@@ -162,7 +166,6 @@ function calcularPontosPericia(actor) {
   const pontosRestantes = Math.max(nivel - 1, 0) * Math.max(base + intMod, 1);
   return pontosPrimeiroNivel + pontosRestantes;
 }
-
 class SkillPointAllocator extends FormApplication {
   constructor(actor, options = {}) {
     super(actor, options);
@@ -174,123 +177,168 @@ class SkillPointAllocator extends FormApplication {
       id: "skill-point-allocator",
       title: "Distribuir Pontos de Perícia",
       template: "modules/my-skill-system/templates/allocator.html",
-      width: 600
+      width: 600,
     });
   }
 
-async getData() {
-  const current = await this.actor.getFlag("my-skill-system", "skills") || {};
-  const extras = await this.actor.getFlag("my-skill-system", "skillMods") || {};
-  const rawIdiomas = await this.actor.getFlag("my-skill-system", "skillsIdiomas") || {};
-  const rawOficios = await this.actor.getFlag("my-skill-system", "skillsOficios") || {};
-  const rawConhecimentos = await this.actor.getFlag("my-skill-system", "skillsConhecimentos") || {};
-  const rawProfissoes = await this.actor.getFlag("my-skill-system", "skillsProfissoes") || {};
-  const rawAtuacoes = await this.actor.getFlag("my-skill-system", "skillsAtuacoes") || {};
-  const totalPoints = calcularPontosPericia(this.actor);
+  async getData() {
+    const [
+      current,
+      extras,
+      rawIdiomas,
+      rawOficios,
+      rawConhecimentos,
+      rawProfissoes,
+      rawAtuacoes,
+    ] = await Promise.all([
+      this.actor.getFlag("my-skill-system", "skills"),
+      this.actor.getFlag("my-skill-system", "skillMods"),
+      this.actor.getFlag("my-skill-system", "skillsIdiomas"),
+      this.actor.getFlag("my-skill-system", "skillsOficios"),
+      this.actor.getFlag("my-skill-system", "skillsConhecimentos"),
+      this.actor.getFlag("my-skill-system", "skillsProfissoes"),
+      this.actor.getFlag("my-skill-system", "skillsAtuacoes"),
+    ]);
 
-  const habilidades = this.actor.system.abilities;
-  const prof = this.actor.system.attributes.prof || 0;
+    // Garante fallback para objetos vazios
+    const safeCurrent = current || {};
+    const safeExtras = extras || {};
+    const safeIdiomas = rawIdiomas || {};
+    const safeOficios = rawOficios || {};
+    const safeConhecimentos = rawConhecimentos || {};
+    const safeProfissoes = rawProfissoes || {};
+    const safeAtuacoes = rawAtuacoes || {};
 
-  const skills = Object.entries(CONFIG.DND5E.skills).reduce((acc, [key, meta]) => {
-    const pontos = current[key] || 0;
-    const modAttr = meta.ability ? habilidades[meta.ability].mod : 0;
-    const modExtra = extras[key] || 0;
-    const modProf = pontos > 0 ? prof : 0;
-    const total = modAttr + pontos + modExtra + modProf;
+    const totalPoints = calcularPontosPericia(this.actor);
 
-    acc[key] = {
-      label: meta.label,
-      ability: meta.ability?.toUpperCase() || "-",
-      modAttr,
-      modExtra,
-      prof: modProf,
-      pontos,
-      total
+    const habilidades = this.actor.system.abilities;
+    const prof = this.actor.system.attributes.prof || 0;
+
+    const skills = Object.entries(CONFIG.DND5E.skills).reduce(
+      (acc, [key, meta]) => {
+        const pontos = current[key] || 0;
+        const modAttr = meta.ability ? habilidades[meta.ability].mod : 0;
+        const modExtra = extras[key] || 0;
+        const modProf = pontos > 0 ? prof : 0;
+        const total = modAttr + pontos + modExtra + modProf;
+
+        acc[key] = {
+          label: meta.label,
+          ability: meta.ability?.toUpperCase() || "-",
+          modAttr,
+          modExtra,
+          prof: modProf,
+          pontos,
+          total,
+        };
+        return acc;
+      },
+      {}
+    );
+
+    // Transforma objetos em arrays
+    const idiomas = Object.entries(rawIdiomas).map(([nome, valor]) => ({
+      nome,
+      valor,
+    }));
+    const oficios = Object.entries(rawOficios).map(([nome, valor]) => ({
+      nome,
+      valor,
+    }));
+    const conhecimentos = Object.entries(rawConhecimentos).map(
+      ([nome, valor]) => ({ nome, valor })
+    );
+    const profissoes = Object.entries(rawProfissoes).map(([nome, valor]) => ({
+      nome,
+      valor,
+    }));
+    const atuacoes = Object.entries(rawAtuacoes).map(([nome, valor]) => ({
+      nome,
+      valor,
+    }));
+
+    return {
+      skills,
+      idiomas,
+      oficios,
+      conhecimentos,
+      profissoes,
+      atuacoes,
+      totalPoints,
     };
-    return acc;
-  }, {});
+  }
 
-  // Converte os objetos personalizados para arrays legíveis no Handlebars
-  const idiomas = Object.entries(rawIdiomas).map(([nome, valor]) => ({ nome, valor }));
-  const oficios = Object.entries(rawOficios).map(([nome, valor]) => ({ nome, valor }));
-  const conhecimentos = Object.entries(rawConhecimentos).map(([nome, valor]) => ({ nome, valor }));
-  const profissoes = Object.entries(rawProfissoes).map(([nome, valor]) => ({ nome, valor }));
-  const atuacoes = Object.entries(rawAtuacoes).map(([nome, valor]) => ({ nome, valor }));
+  async _updateObject(_, formData) {
+    const data = expandObject(formData);
+    const actor = this.actor;
 
-  return {
-    skills,
-    idiomas,
-    oficios,
-    conhecimentos,
-    profissoes,
-    atuacoes,
-    totalPoints
-  };
+    const keysParaLimpar = [
+      "skills",
+      "skillMods",
+      "skillsIdiomas",
+      "skillsOficios",
+      "skillsConhecimentos",
+      "skillsProfissoes",
+      "skillsAtuacoes",
+    ];
+
+    // Apaga todas as flags em paralelo
+    await Promise.all(
+      keysParaLimpar.map((key) => this.actor.unsetFlag("my-skill-system", key))
+    );
+
+    // Reconstrói os grupos (mantém serial por depender do DOM e ordem de parsing)
+    const [idiomas, oficios, conhecimentos, profissoes, atuacoes] =
+      await Promise.all([
+        reconstruirGrupo(data, "idioma", actor),
+        reconstruirGrupo(data, "oficio", actor),
+        reconstruirGrupo(data, "conhecimento", actor),
+        reconstruirGrupo(data, "profissao", actor),
+        reconstruirGrupo(data, "atuacao", actor),
+      ]);
+
+    // Salva todas as flags em paralelo
+    await Promise.all([
+      actor.setFlag("my-skill-system", "skills", data.skills),
+      actor.setFlag("my-skill-system", "skillsIdiomas", idiomas),
+      actor.setFlag("my-skill-system", "skillsOficios", oficios),
+      actor.setFlag("my-skill-system", "skillsConhecimentos", conhecimentos),
+      actor.setFlag("my-skill-system", "skillsProfissoes", profissoes),
+      actor.setFlag("my-skill-system", "skillsAtuacoes", atuacoes),
+    ]);
+  }
+}
+async function reconstruirGrupo(data, campo, actor) {
+  const nomes = data[`${campo}Nome`] || {};
+  const valores = data[`${campo}Valor`] || {};
+  const novos = {};
+
+  for (const i of Object.keys(nomes)) {
+    const nome = nomes[i]?.trim();
+    const valor = parseInt(valores[i]) || 0;
+    if (nome) novos[nome] = valor;
+  }
+
+  const flagKey = `skills${capitalize(campo)}`;
+
+  const antigos = (await actor.getFlag("my-skill-system", flagKey)) || {};
+
+  // Detecta chaves removidas
+  const removidos = Object.keys(antigos).filter((nome) => !(nome in novos));
+
+  if (removidos.length > 0) {
+    await actor.unsetFlag("my-skill-system", flagKey); // limpa tudo se teve alguma remoção
+  }
+
+  return novos;
 }
 
-
-async _updateObject(_, formData) {
-  console.log(formData);
-  const data = expandObject(formData);
-  console.log("data: ",data)
-  const idiomas = {};
-  const nomesIdioma = data.idiomaNome || [];
-  const valoresIdioma = data.idiomaValor || [];
-  console.log(nomesIdioma)
-  for (let i = 0; i < nomesIdioma.length; i++) {
-    const nome = nomesIdioma[i]?.trim();
-    const valor = parseInt(valoresIdioma[i]) || 0;
-    console.log("nome: ",nome);
-    console.log("valor: ",valor);
-    if (nome) idiomas[nome] = valor;
+function capitalize(str) {
+  if (typeof str !== "string") {
+    console.warn("capitalize: valor não é string", str);
+    return "";
   }
-  console.log("idiomas: ",idiomas)
-  const oficios = {};
-  const nomesOficio = data.oficioNome || [];
-  const valoresOficio = data.oficioValor || [];
-  for (let i = 0; i < nomesOficio.length; i++) {
-    const nome = nomesOficio[i]?.trim();
-    const valor = parseInt(valoresOficio[i]) || 0;
-        console.log("nome: ",nome);
-    console.log("valor: ",valor);
-    if (nome) oficios[nome] = valor;
-  }
-  console.log("oficios: ",oficios)
-  const conhecimentos = {};
-  const nomesConhecimento = data.conhecimentoNome || [];
-  const valoresConhecimento = data.conhecimentoValor || [];
-  for (let i = 0; i < nomesConhecimento.length; i++) {
-    const nome = nomesConhecimento[i]?.trim();
-    const valor = parseInt(valoresConhecimento[i]) || 0;
-    if (nome) conhecimentos[nome] = valor;
-  }
-
-  const profissoes = {};
-  const nomesProfissao = data.profissaoNome || [];
-  const valoresProfissao = data.profissaoValor || [];
-  for (let i = 0; i < nomesProfissao.length; i++) {
-    const nome = nomesProfissao[i]?.trim();
-    const valor = parseInt(valoresProfissao[i]) || 0;
-    if (nome) profissoes[nome] = valor;
-  }
-
-  const atuacoes = {};
-  const nomesAtuacao = data.atuacaoNome || [];
-  const valoresAtuacao = data.atuacaoValor || [];
-  for (let i = 0; i < nomesAtuacao.length; i++) {
-    const nome = nomesAtuacao[i]?.trim();
-    const valor = parseInt(valoresAtuacao[i]) || 0;
-    if (nome) atuacoes[nome] = valor;
-  }
-
-  await this.actor.setFlag("my-skill-system", "skills", data.skills);
-  await this.actor.setFlag("my-skill-system", "skillsIdiomas", idiomas);
-  await this.actor.setFlag("my-skill-system", "skillsOficios", oficios);
-  await this.actor.setFlag("my-skill-system", "skillsConhecimentos", conhecimentos);
-  await this.actor.setFlag("my-skill-system", "skillsProfissoes", profissoes);
-  await this.actor.setFlag("my-skill-system", "skillsAtuacoes", atuacoes);
-}
-
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 Hooks.on("renderActorSheet5eCharacter", (app, html, data) => {
@@ -341,14 +389,16 @@ Hooks.on("renderActorSheet5eCharacter", (app, html, data) => {
         title: `Perícia: ${label}`,
         flavor: `Perícia: ${label}`,
         fastForward: false,
-        rollMode: game.settings.get("core", "rollMode")
+        rollMode: game.settings.get("core", "rollMode"),
       });
     });
 
     novaLista.append(li);
   }
   console.log(novaLista);
-  const container = $(`<div class="custom-skill-container" style="max-height: 65vh; overflow-y: auto;"></div>`);
+  const container = $(
+    `<div class="custom-skill-container" style="max-height: 65vh; overflow-y: auto;"></div>`
+  );
   container.append(novaLista);
   originalSkillSection.empty().append(container);
 });
