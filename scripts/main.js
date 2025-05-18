@@ -57,7 +57,7 @@ Hooks.once("init", () => {
       const atuacoes = this.getFlag("my-skill-system", "skillsAtuacoes") || {};
       const prof = this.system.attributes.prof || 0;
 
-      const sortedSkills = Object.entries(allSkills).sort((a, b) => {
+      const sortedSkills = Object.entries(skills).sort((a, b) => {
         const labelA = a[1].label?.toLowerCase?.() || a[0];
         const labelB = b[1].label?.toLowerCase?.() || b[0];
         return labelA.localeCompare(labelB, "pt-BR");
@@ -222,9 +222,9 @@ class SkillPointAllocator extends FormApplication {
 
     const skills = Object.entries(CONFIG.DND5E.skills).reduce(
       (acc, [key, meta]) => {
-        const pontos = current[key] || 0;
+        const pontos = safeCurrent[key] || 0;
         const modAttr = meta.ability ? habilidades[meta.ability].mod : 0;
-        const modExtra = extras[key] || 0;
+        const modExtra = safeExtras[key] || 0;
         const modProf = pontos > 0 ? prof : 0;
         const total = modAttr + pontos + modExtra + modProf;
 
@@ -243,22 +243,22 @@ class SkillPointAllocator extends FormApplication {
     );
 
     // Transforma objetos em arrays
-    const idiomas = Object.entries(rawIdiomas).map(([nome, valor]) => ({
+    const idiomas = Object.entries(safeIdiomas).map(([nome, valor]) => ({
       nome,
       valor,
     }));
-    const oficios = Object.entries(rawOficios).map(([nome, valor]) => ({
+    const oficios = Object.entries(safeOficios).map(([nome, valor]) => ({
       nome,
       valor,
     }));
-    const conhecimentos = Object.entries(rawConhecimentos).map(
+    const conhecimentos = Object.entries(safeConhecimentos).map(
       ([nome, valor]) => ({ nome, valor })
     );
-    const profissoes = Object.entries(rawProfissoes).map(([nome, valor]) => ({
+    const profissoes = Object.entries(safeProfissoes).map(([nome, valor]) => ({
       nome,
       valor,
     }));
-    const atuacoes = Object.entries(rawAtuacoes).map(([nome, valor]) => ({
+    const atuacoes = Object.entries(safeAtuacoes).map(([nome, valor]) => ({
       nome,
       valor,
     }));
