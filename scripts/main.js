@@ -74,6 +74,7 @@ Hooks.once("init", () => {
       for (const [key, meta] of sortedSkills) {
         const pontos = flags[key] || 0;
         const modAtributo = meta.ability ? data.abilities[meta.ability].mod : 0;
+        const modExtra = skillMods[key] || 0;
 
         const isExpert = !!expertises[key];
 
@@ -85,13 +86,14 @@ Hooks.once("init", () => {
         } else if (temSemiprof) {
           modProf = Math.floor(prof / 2);
         }
-        const modFinal = pontos + modAtributo + modProf + extraProf;
+        const modFinal = pontos + modAtributo + modExtra + modProf + extraProf;
 
         data.skills[key] = {
           label: meta.label,
           value: pontos,
           mod: modFinal,
           ability: meta.ability,
+          modExtra: modExtra,
         };
       }
 
