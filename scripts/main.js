@@ -56,6 +56,14 @@ Hooks.once("init", () => {
         this.getFlag("my-skill-system", "skillsProfissoes") || {};
       const atuacoes = this.getFlag("my-skill-system", "skillsAtuacoes") || {};
       const prof = this.system.attributes.prof || 0;
+      const expertises = this.getFlag("my-skill-system", "expertises") || {};
+
+      // Detecta se o ator é um bardo de nível 2+
+      const classe = this.items.find(
+        (i) => i.type === "class" && i.name?.toLowerCase() === "bard"
+      );
+      const nivelBardo = classe?.system?.levels || 0;
+      const temSemiprof = nivelBardo >= 2;
 
       const sortedSkills = Object.entries(skills).sort((a, b) => {
         const labelA = a[1].label?.toLowerCase?.() || a[0];
@@ -66,7 +74,18 @@ Hooks.once("init", () => {
       for (const [key, meta] of sortedSkills) {
         const pontos = flags[key] || 0;
         const modAtributo = meta.ability ? data.abilities[meta.ability].mod : 0;
-        const modFinal = pontos > 0 ? pontos + modAtributo + prof : modAtributo;
+
+        const isExpert = !!expertises[key];
+
+        const extraProf = isExpert && pontos > 0 ? prof : 0;
+
+        let modProf = 0;
+        if (pontos > 0) {
+          modProf = prof;
+        } else if (temSemiprof) {
+          modProf = Math.floor(prof / 2);
+        }
+        const modFinal = pontos + modAtributo + modProf + extraProf;
 
         data.skills[key] = {
           label: meta.label,
@@ -215,7 +234,7 @@ class SkillPointAllocator extends FormApplication {
     const safeProfissoes = rawProfissoes || {};
     const safeAtuacoes = rawAtuacoes || {};
 
-    const totalPoints = calcularPontosPericia(this.actor);
+    //const totalPoints = calcularPontosPericia(this.actor);
 
     const habilidades = this.actor.system.abilities;
     const prof = this.actor.system.attributes.prof || 0;
@@ -270,13 +289,14 @@ class SkillPointAllocator extends FormApplication {
       conhecimentos,
       profissoes,
       atuacoes,
-      totalPoints,
+      //totalPoints,
     };
   }
 
   async _updateObject(_, formData) {
     const data = expandObject(formData);
     const actor = this.actor;
+    console.log(data);
 
     const keysParaLimpar = [
       "skills",
@@ -303,9 +323,12 @@ class SkillPointAllocator extends FormApplication {
         reconstruirGrupo(data, "atuacao", actor),
       ]);
 
+    const skillMods = data.skillMods || {};
+
     // Salva todas as flags em paralelo
     await Promise.all([
       actor.setFlag("my-skill-system", "skills", data.skills),
+      actor.setFlag("my-skill-system", "skillMods", skillMods), // <- esta linha estava faltando
       actor.setFlag("my-skill-system", "skillsIdiomas", idiomas),
       actor.setFlag("my-skill-system", "skillsOficios", oficios),
       actor.setFlag("my-skill-system", "skillsConhecimentos", conhecimentos),
@@ -341,12 +364,18 @@ Hooks.on("renderActorSheet5eCharacter", (app, html, data) => {
   const rollData = actor.getRollData();
   const allSkills = rollData.skills || {};
 
+  const sortedSkills = Object.entries(allSkills).sort((a, b) => {
+    const labelA = a[1]?.label?.toLowerCase?.() || a[0];
+    const labelB = b[1]?.label?.toLowerCase?.() || b[0];
+    return labelA.localeCompare(labelB, "pt-BR");
+  });
+
   const originalSkillSection = html.find(".skills-list");
   if (!originalSkillSection.length) return;
 
   const novaLista = $(`<ul class="custom-skill-list"></ul>`);
 
-  for (const [key, skill] of Object.entries(allSkills)) {
+  for (const [key, skill] of sortedSkills) {
     let label;
 
     if (key.startsWith("idiomas_")) {
