@@ -1,9 +1,9 @@
 <form id="skill-form">
   <h2>Distribuir Pontos de Perícia</h2>
   <p>
-    Total disponível: <span id="total-pontos">{{totalPoints}}</span> |
-    Gastos: <span id="pontos-gastos">0</span> |
-    Restantes: <span id="pontos-restantes">{{totalPoints}}</span>
+    Total disponível: <span id="total-pontos">{{totalPoints}}</span> | Gastos:
+    <span id="pontos-gastos">0</span> | Restantes:
+    <span id="pontos-restantes">{{totalPoints}}</span>
   </p>
 
   <table>
@@ -14,6 +14,7 @@
         <th>Mod</th>
         <th>Pontos</th>
         <th>Mod Extra</th>
+        <th>Expertise</th>
         <th>Total</th>
       </tr>
     </thead>
@@ -24,10 +25,25 @@
         <td>{{skill.ability}}</td>
         <td>{{#if (gt skill.modAttr 0)}}+{{/if}}{{skill.modAttr}}</td>
         <td>
-          <input type="number" name="skills.{{key}}" class="skill-input" value="{{skill.pontos}}" min="0" />
+          <input
+            type="number"
+            name="skills.{{key}}"
+            class="skill-input"
+            value="{{skill.pontos}}"
+            min="0"
+          />
         </td>
         <td>
-          <input type="number" name="skillMods.{{key}}" class="mod-input" value="{{skill.modExtra}}" />
+          <input
+            type="number"
+            name="skillMods.{{key}}"
+            class="mod-input"
+            value="{{skill.modExtra}}"
+          />
+        </td>
+        <td>
+          <input type="checkbox" name="expertises.{{key}}"
+          class="expertise-checkbox" {{#if skill.expert}}checked{{/if}} />
         </td>
         <td class="skill-total">+{{skill.total}}</td>
       </tr>
@@ -35,71 +51,131 @@
     </tbody>
   </table>
 
-  <hr>
+  <hr />
   <h3>Idiomas</h3>
   <div id="idiomas-lista">
     {{#each idiomas}}
     <div class="idioma-linha">
-      <input name="idiomaNome.{{@index}}" type="text" value="{{this.nome}}" placeholder="Nome do idioma" />
-      <input name="idiomaValor.{{@index}}" class="idioma-input" type="number" value="{{this.valor}}" min="0" />
+      <input
+        name="idiomaNome.{{@index}}"
+        type="text"
+        value="{{this.nome}}"
+        placeholder="Nome do idioma"
+      />
+      <input
+        name="idiomaValor.{{@index}}"
+        class="idioma-input"
+        type="number"
+        value="{{this.valor}}"
+        min="0"
+      />
     </div>
     {{/each}}
   </div>
 
   <button type="button" onclick="addLinha('idiomas')">Adicionar Idioma</button>
 
-  <hr>
+  <hr />
   <h3>Ofícios</h3>
   <div id="oficios-lista">
     {{#each oficios}}
     <div class="oficio-linha">
-      <input name="oficioNome.{{@index}}" type="text" value="{{this.nome}}" placeholder="Nome do ofício" />
-      <input name="oficioValor.{{@index}}" class="oficio-input" type="number" value="{{this.valor}}" min="0" />
+      <input
+        name="oficioNome.{{@index}}"
+        type="text"
+        value="{{this.nome}}"
+        placeholder="Nome do ofício"
+      />
+      <input
+        name="oficioValor.{{@index}}"
+        class="oficio-input"
+        type="number"
+        value="{{this.valor}}"
+        min="0"
+      />
     </div>
     {{/each}}
   </div>
 
   <button type="button" onclick="addLinha('oficios')">Adicionar Ofício</button>
 
-  <hr>
+  <hr />
   <h3>Conhecimentos</h3>
   <div id="conhecimentos-lista">
     {{#each conhecimentos}}
     <div class="conhecimento-linha">
-      <input name="conhecimentoNome.{{@index}}" type="text" value="{{this.nome}}" placeholder="Nome do conhecimento" />
-      <input name="conhecimentoValor.{{@index}}" class="conhecimento-input" type="number" value="{{this.valor}}"
-        min="0" />
+      <input
+        name="conhecimentoNome.{{@index}}"
+        type="text"
+        value="{{this.nome}}"
+        placeholder="Nome do conhecimento"
+      />
+      <input
+        name="conhecimentoValor.{{@index}}"
+        class="conhecimento-input"
+        type="number"
+        value="{{this.valor}}"
+        min="0"
+      />
     </div>
     {{/each}}
   </div>
-  <button type="button" onclick="addLinha('conhecimentos')">Adicionar Conhecimento</button>
+  <button type="button" onclick="addLinha('conhecimentos')">
+    Adicionar Conhecimento
+  </button>
 
-  <hr>
+  <hr />
   <h3>Profissões</h3>
   <div id="profissoes-lista">
     {{#each profissoes}}
     <div class="profissao-linha">
-      <input name="profissaoNome.{{@index}}" type="text" value="{{this.nome}}" placeholder="Nome da profissão" />
-      <input name="profissaoValor.{{@index}}" class="profissao-input" type="number" value="{{this.valor}}" min="0" />
+      <input
+        name="profissaoNome.{{@index}}"
+        type="text"
+        value="{{this.nome}}"
+        placeholder="Nome da profissão"
+      />
+      <input
+        name="profissaoValor.{{@index}}"
+        class="profissao-input"
+        type="number"
+        value="{{this.valor}}"
+        min="0"
+      />
     </div>
     {{/each}}
   </div>
-  <button type="button" onclick="addLinha('profissoes')">Adicionar Profissão</button>
+  <button type="button" onclick="addLinha('profissoes')">
+    Adicionar Profissão
+  </button>
 
-  <hr>
+  <hr />
   <h3>Atuações</h3>
   <div id="atuacoes-lista">
     {{#each atuacoes}}
     <div class="atuacao-linha">
-      <input name="atuacaoNome.{{@index}}" type="text" value="{{this.nome}}" placeholder="Nome da atuação" />
-      <input name="atuacaoValor.{{@index}}" class="atuacao-input" type="number" value="{{this.valor}}" min="0" />
+      <input
+        name="atuacaoNome.{{@index}}"
+        type="text"
+        value="{{this.nome}}"
+        placeholder="Nome da atuação"
+      />
+      <input
+        name="atuacaoValor.{{@index}}"
+        class="atuacao-input"
+        type="number"
+        value="{{this.valor}}"
+        min="0"
+      />
     </div>
     {{/each}}
   </div>
 
-  <button type="button" onclick="addLinha('atuacoes')">Adicionar Atuação</button>
+  <button type="button" onclick="addLinha('atuacoes')">
+    Adicionar Atuação
+  </button>
 
-  <hr>
+  <hr />
   <button type="submit" id="submit-button">Salvar</button>
 </form>
 
@@ -112,36 +188,39 @@
 
     let gastos = 0;
 
-    document.querySelectorAll(".skill-input").forEach(input => {
-      const pontos = parseInt(input.value) || 0;
-      gastos += pontos;
+    document.querySelectorAll(".skill-row").forEach((row) => {
+      const skillKey = row.dataset.skillKey;
+      const pontos = parseInt(row.querySelector(".skill-input")?.value || "0");
+      const modAttr =
+        parseInt(row.querySelector("td:nth-child(3)")?.textContent) || 0;
+      const modExtra = parseInt(row.querySelector(".mod-input")?.value || "0");
+      const isExpert = row.querySelector(".expertise-checkbox")?.checked;
+      const prof = pontos > 0 ? window._actorProfBonus || 2 : 0;
+      const extraProf = isExpert && pontos > 0 ? prof : 0;
 
-      const row = input.closest("tr");
-      if (!row) return;
-
-      const modAttr = parseInt(row.querySelector("td:nth-child(3)")?.textContent) || 0;
-      const modExtra = parseInt(row.querySelector(".mod-input")?.value || 0);
-      const prof = pontos > 0 ? (window._actorProfBonus || 2) : 0;
-
-      const isIdioma = row.dataset.skillKey?.startsWith("idiomas_");
+      const isIdioma = skillKey?.startsWith("idiomas_");
 
       let totalMod = isIdioma
         ? pontos + prof
         : pontos > 0
-          ? pontos + modAttr + modExtra + prof
-          : modAttr;
+        ? pontos + modAttr + modExtra + prof + extraProf
+        : modAttr;
 
       const cell = row.querySelector(".skill-total");
-      if (cell) cell.textContent = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
+      if (cell)
+        cell.textContent = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
+
+      gastos += pontos;
     });
 
-
-    ["idioma", "oficio", "conhecimento", "profissao", "atuacao"].forEach(tipo => {
-      document.querySelectorAll(`.${tipo}-input`).forEach(input => {
-        const pontos = parseInt(input.value) || 0;
-        gastos += pontos;
-      });
-    });
+    ["idioma", "oficio", "conhecimento", "profissao", "atuacao"].forEach(
+      (tipo) => {
+        document.querySelectorAll(`.${tipo}-input`).forEach((input) => {
+          const pontos = parseInt(input.value) || 0;
+          gastos += pontos;
+        });
+      }
+    );
 
     gastosEl.textContent = gastos;
     const restantes = total - gastos;
@@ -161,7 +240,7 @@
       oficios: "oficio",
       conhecimentos: "conhecimento",
       profissoes: "profissao",
-      atuacoes: "atuacao"
+      atuacoes: "atuacao",
     }[tipo];
 
     const div = document.createElement("div");
@@ -171,27 +250,38 @@
     <input name="${singularPrefix}Valor.${index}" class="${singularPrefix}-input" type="number" value="0" min="0" />
   `;
     container.appendChild(div);
-    div.querySelector(`.${singularPrefix}-input`).addEventListener("input", atualizarResumo);
+    div
+      .querySelector(`.${singularPrefix}-input`)
+      .addEventListener("input", atualizarResumo);
     atualizarResumo();
   }
 
-
-  document.addEventListener("input", e => {
-    if (e.target.matches(".skill-input, .mod-input, .idioma-input, .oficio-input, .conhecimento-input, .profissao-input, .atuacao-input")) {
+  document.addEventListener("input", (e) => {
+    if (
+      e.target.matches(
+        ".skill-input, .mod-input, .idioma-input, .oficio-input, .conhecimento-input, .profissao-input, .atuacao-input, .expertise-checkbox"
+      )
+    ) {
       atualizarResumo();
     }
   });
 
-
-  document.getElementById("skill-form").addEventListener("submit", function (e) {
-    const total = parseInt(document.getElementById("total-pontos").textContent);
-    const gastos = parseInt(document.getElementById("pontos-gastos").textContent);
-    if (gastos > total) {
-      e.preventDefault();
-      ui.notifications.warn("Você gastou mais pontos do que o disponível.");
-    }
-  });
-  window._actorProfBonus = game.actors.get(game.user.character?.id)?.system?.attributes?.prof || 2;
+  document
+    .getElementById("skill-form")
+    .addEventListener("submit", function (e) {
+      const total = parseInt(
+        document.getElementById("total-pontos").textContent
+      );
+      const gastos = parseInt(
+        document.getElementById("pontos-gastos").textContent
+      );
+      if (gastos > total) {
+        e.preventDefault();
+        ui.notifications.warn("Você gastou mais pontos do que o disponível.");
+      }
+    });
+  window._actorProfBonus =
+    game.actors.get(game.user.character?.id)?.system?.attributes?.prof || 2;
 
   atualizarResumo();
 </script>
