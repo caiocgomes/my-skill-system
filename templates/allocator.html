@@ -259,9 +259,15 @@
   document.addEventListener("input", (e) => {
     if (
       e.target.matches(
-        ".skill-input, .mod-input, .idioma-input, .oficio-input, .conhecimento-input, .profissao-input, .atuacao-input, .expertise-checkbox"
+        ".skill-input, .mod-input, .idioma-input, .oficio-input, .conhecimento-input, .profissao-input, .atuacao-input"
       )
     ) {
+      atualizarResumo();
+    }
+  });
+
+  document.addEventListener("change", (e) => {
+    if (e.target.matches(".expertise-checkbox")) {
       atualizarResumo();
     }
   });
