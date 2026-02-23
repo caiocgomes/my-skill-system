@@ -1,6 +1,8 @@
+// Importa as dependências necessárias
 Hooks.once("init", () => {
   console.log("Skill System | Inicializando módulo...");
 
+  // Registra o sistema de habilidades no CONFIG
   CONFIG.DND5E.skills = {
     abrirFechadura: { label: "Abrir Fechadura", ability: "dex" },
     acrobacia: { label: "Acrobacia", ability: "dex" },
@@ -40,7 +42,7 @@ Hooks.once("init", () => {
     usarDispositivoMagico: { label: "Usar Dispositivo Mágico", ability: "cha" },
     ver: { label: "Ver", ability: "wis" },
   };
-
+  // Registra o sistema de habilidades no CONFIG
   libWrapper.register(
     "my-skill-system",
     "CONFIG.Actor.documentClass.prototype.getRollData",
@@ -48,6 +50,7 @@ Hooks.once("init", () => {
       const data = wrapped.call(this);
       const skills = CONFIG.DND5E.skills;
       const flags = this.getFlag("my-skill-system", "skills") || {};
+      const skillMods = this.getFlag("my-skill-system", "skillMods") || {};
       const idiomas = this.getFlag("my-skill-system", "skillsIdiomas") || {};
       const oficios = this.getFlag("my-skill-system", "skillsOficios") || {};
       const conhecimentos =
@@ -211,6 +214,7 @@ class SkillPointAllocator extends FormApplication {
   async getData() {
     const [
       current,
+      expertises,
       extras,
       rawIdiomas,
       rawOficios,
@@ -219,6 +223,7 @@ class SkillPointAllocator extends FormApplication {
       rawAtuacoes,
     ] = await Promise.all([
       this.actor.getFlag("my-skill-system", "skills"),
+      this.actor.getFlag("my-skill-system", "expertises"),
       this.actor.getFlag("my-skill-system", "skillMods"),
       this.actor.getFlag("my-skill-system", "skillsIdiomas"),
       this.actor.getFlag("my-skill-system", "skillsOficios"),
@@ -247,7 +252,9 @@ class SkillPointAllocator extends FormApplication {
         const modAttr = meta.ability ? habilidades[meta.ability].mod : 0;
         const modExtra = safeExtras[key] || 0;
         const modProf = pontos > 0 ? prof : 0;
-        const total = modAttr + pontos + modExtra + modProf;
+        const isExpert = expertises?.[key] ?? false;
+        const extraProf = isExpert && pontos > 0 ? prof : 0;
+        const total = modAttr + pontos + modExtra + modProf + extraProf;
 
         acc[key] = {
           label: meta.label,
@@ -257,6 +264,7 @@ class SkillPointAllocator extends FormApplication {
           prof: modProf,
           pontos,
           total,
+          expert: isExpert,
         };
         return acc;
       },
@@ -308,6 +316,7 @@ class SkillPointAllocator extends FormApplication {
       "skillsConhecimentos",
       "skillsProfissoes",
       "skillsAtuacoes",
+      "expertises",
     ];
 
     // Apaga todas as flags em paralelo
@@ -330,6 +339,7 @@ class SkillPointAllocator extends FormApplication {
     // Salva todas as flags em paralelo
     await Promise.all([
       actor.setFlag("my-skill-system", "skills", data.skills),
+      actor.setFlag("my-skill-system", "expertises", data.expertises),
       actor.setFlag("my-skill-system", "skillMods", skillMods), // <- esta linha estava faltando
       actor.setFlag("my-skill-system", "skillsIdiomas", idiomas),
       actor.setFlag("my-skill-system", "skillsOficios", oficios),
