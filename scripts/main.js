@@ -47,6 +47,7 @@ Hooks.once("init", () => {
     "my-skill-system",
     "CONFIG.Actor.documentClass.prototype.getRollData",
     function (wrapped) {
+      if (this.type !== "character") return wrapped();
       const data = wrapped.call(this);
       const skills = CONFIG.DND5E.skills;
       const flags = this.getFlag("my-skill-system", "skills") || {};
@@ -160,6 +161,7 @@ Hooks.once("init", () => {
 
   Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
     if (!sheet.actor.isOwner) return;
+    if (sheet.actor.type !== "character") return;
     buttons.unshift({
       label: "Perícias",
       class: "skill-allocator",
@@ -199,6 +201,10 @@ function calcularPontosPericia(actor) {
 class SkillPointAllocator extends FormApplication {
   constructor(actor, options = {}) {
     super(actor, options);
+    if (actor.type !== "character") {
+      ui.notifications.warn("O alocador de perícias só funciona para personagens de jogadores.");
+      return;
+    }
     this.actor = actor;
   }
 
@@ -372,6 +378,7 @@ function capitalize(str) {
 }
 
 Hooks.on("renderActorSheet5eCharacter", (app, html, data) => {
+  if (app.actor.type !== "character") return;
   const actor = app.actor;
   const rollData = actor.getRollData();
   const allSkills = rollData.skills || {};
