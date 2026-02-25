@@ -1,55 +1,55 @@
-// Importa as dependências necessárias
+// Skills customizadas do sistema 3.5 — usadas apenas para PCs.
+// NÃO sobrescreve CONFIG.DND5E.skills para não afetar NPCs/monstros.
+const MY_SKILLS = {
+  abrirFechadura: { label: "Abrir Fechadura", ability: "dex" },
+  acrobacia: { label: "Acrobacia", ability: "dex" },
+  agarrar: { label: "Agarrar", ability: "str" },
+  avaliacao: { label: "Avaliação", ability: "int" },
+  // atuacao: { label: "Atuação", ability: "cha" },
+  coletarInformacao: { label: "Coletar Informação", ability: "cha" },
+  concentracao: { label: "Concentração", ability: "con" },
+  //conhecimento: { label: "Conhecimento", ability: "int" },
+  correr: { label: "Correr", ability: "con" },
+  cura: { label: "Cura", ability: "wis" },
+  decifrarEscrita: { label: "Decifrar Escrita", ability: "int" },
+  desativarDispositivo: { label: "Desativar Dispositivo", ability: "int" },
+  disfarce: { label: "Disfarce", ability: "cha" },
+  enganacao: { label: "Enganação", ability: "cha" },
+  equilibrio: { label: "Equilíbrio", ability: "dex" },
+  escalar: { label: "Escalar", ability: "str" },
+  escapar: { label: "Escapar", ability: "dex" },
+  esconder: { label: "Esconder-se", ability: "dex" },
+  falsificacao: { label: "Falsificação", ability: "int" },
+  intimidacao: { label: "Intimidação", ability: "cha" },
+  investigacao: { label: "Investigação", ability: "int" },
+  lidarAnimais: { label: "Lidar com Animais", ability: "wis" },
+  magificio: { label: "Magifício", ability: "int" },
+  montaria: { label: "Montaria", ability: "dex" },
+  moverSilencio: { label: "Mover-se em Silênçio", ability: "dex" },
+  natacao: { label: "Natação", ability: "str" },
+  //oficio: { label: "Ofício", ability: "int" },
+  ouvir: { label: "Ouvir", ability: "wis" },
+  persuasao: { label: "Persuasão", ability: "cha" },
+  prestidigitacao: { label: "Prestidigitação", ability: "dex" },
+  //profissao: { label: "Profissão", ability: "wis" },
+  salto: { label: "Salto", ability: "str" },
+  sentirMotivacao: { label: "Sentir Motivação", ability: "wis" },
+  sobrevivencia: { label: "Sobrevivência", ability: "wis" },
+  usarCorda: { label: "Usar Corda", ability: "dex" },
+  usarDispositivoMagico: { label: "Usar Dispositivo Mágico", ability: "cha" },
+  ver: { label: "Ver", ability: "wis" },
+};
+
 Hooks.once("init", () => {
   console.log("Skill System | Inicializando módulo...");
 
-  // Registra o sistema de habilidades no CONFIG
-  CONFIG.DND5E.skills = {
-    abrirFechadura: { label: "Abrir Fechadura", ability: "dex" },
-    acrobacia: { label: "Acrobacia", ability: "dex" },
-    agarrar: { label: "Agarrar", ability: "str" },
-    avaliacao: { label: "Avaliação", ability: "int" },
-    // atuacao: { label: "Atuação", ability: "cha" },
-    coletarInformacao: { label: "Coletar Informação", ability: "cha" },
-    concentracao: { label: "Concentração", ability: "con" },
-    //conhecimento: { label: "Conhecimento", ability: "int" },
-    correr: { label: "Correr", ability: "con" },
-    cura: { label: "Cura", ability: "wis" },
-    decifrarEscrita: { label: "Decifrar Escrita", ability: "int" },
-    desativarDispositivo: { label: "Desativar Dispositivo", ability: "int" },
-    disfarce: { label: "Disfarce", ability: "cha" },
-    enganacao: { label: "Enganação", ability: "cha" },
-    equilibrio: { label: "Equilíbrio", ability: "dex" },
-    escalar: { label: "Escalar", ability: "str" },
-    escapar: { label: "Escapar", ability: "dex" },
-    esconder: { label: "Esconder-se", ability: "dex" },
-    falsificacao: { label: "Falsificação", ability: "int" },
-    intimidacao: { label: "Intimidação", ability: "cha" },
-    investigacao: { label: "Investigação", ability: "int" },
-    lidarAnimais: { label: "Lidar com Animais", ability: "wis" },
-    magificio: { label: "Magifício", ability: "int" },
-    montaria: { label: "Montaria", ability: "dex" },
-    moverSilencio: { label: "Mover-se em Silênçio", ability: "dex" },
-    natacao: { label: "Natação", ability: "str" },
-    //oficio: { label: "Ofício", ability: "int" },
-    ouvir: { label: "Ouvir", ability: "wis" },
-    persuasao: { label: "Persuasão", ability: "cha" },
-    prestidigitacao: { label: "Prestidigitação", ability: "dex" },
-    //profissao: { label: "Profissão", ability: "wis" },
-    salto: { label: "Salto", ability: "str" },
-    sentirMotivacao: { label: "Sentir Motivação", ability: "wis" },
-    sobrevivencia: { label: "Sobrevivência", ability: "wis" },
-    usarCorda: { label: "Usar Corda", ability: "dex" },
-    usarDispositivoMagico: { label: "Usar Dispositivo Mágico", ability: "cha" },
-    ver: { label: "Ver", ability: "wis" },
-  };
-  // Registra o sistema de habilidades no CONFIG
   libWrapper.register(
     "my-skill-system",
     "CONFIG.Actor.documentClass.prototype.getRollData",
     function (wrapped) {
       if (this.type !== "character") return wrapped();
       const data = wrapped.call(this);
-      const skills = CONFIG.DND5E.skills;
+      const skills = MY_SKILLS;
       const flags = this.getFlag("my-skill-system", "skills") || {};
       const skillMods = this.getFlag("my-skill-system", "skillMods") || {};
       const idiomas = this.getFlag("my-skill-system", "skillsIdiomas") || {};
@@ -252,7 +252,7 @@ class SkillPointAllocator extends FormApplication {
     const habilidades = this.actor.system.abilities;
     const prof = this.actor.system.attributes.prof || 0;
 
-    const skills = Object.entries(CONFIG.DND5E.skills).reduce(
+    const skills = Object.entries(MY_SKILLS).reduce(
       (acc, [key, meta]) => {
         const pontos = safeCurrent[key] || 0;
         const modAttr = meta.ability ? habilidades[meta.ability].mod : 0;
@@ -413,7 +413,7 @@ Hooks.on("renderActorSheet5eCharacter", (app, html, data) => {
       const nome = key.replace("atuacoes_", "");
       label = `Atuação (${nome})`;
     } else {
-      label = skill.label || CONFIG.DND5E.skills?.[key]?.label || key;
+      label = skill.label || MY_SKILLS[key]?.label || key;
     }
 
     const mod = skill.mod >= 0 ? `+${skill.mod}` : `${skill.mod}`;
